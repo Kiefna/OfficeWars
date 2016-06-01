@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+{# So the context variables needed #}
+{# 1. "matchups": this is the team object pairings for the bracket #}
+{% if error == "oddNumPlayers" %}
+    <h1 align="center">Error, Odd number of players</h1>
+{% endif %}
+
+{% if error == "TooFew" %}
+    <h1 align="center">Error, Too few players</h1>
+{% endif %}
+
+{% if error == "oddNumMatchups" %}
+    <h1 align="center">Error, Too many teams</h1>
+{% endif %}
+{#<h1>Sort Button Success</h1>#}
+
+{#<div class='row'>#}
+{##}
+{#    <div class='col-sm-6'>#}
+{##}
+{##}
+{#    {% if title %}#}
+{#    <h1 class='{% if title_align_center %}text-align-center{% endif %}'>{{ title }}</h1>#}
+{#    {% endif %}#}
+{##}
+{#    <form method='POST' action=''>{% csrf_token %}#}
+{#    {{ form|crispy }}#}
+{##}
+{#    <input class='btn btn-default' type='submit' value='Add' />#}
+{#    <a class = "btn btn-default" href = '#' >Submit</a>#}
+{#    </form>#}
+{#    </div>#}
+{##}
+{#    <div class='col-sm-6'>#}
+{##}
+{##}
+{#    {% for playername in playerList%}#}
+{#    <h1 class='{% if title_align_center %}text-align-center{% endif %}'>{{ playername }}</h1>#}
+{#    {% endfor %}#}
+{##}
+{#    </div>#}
+{##}
+{#</div>#}
+{% endblock %}

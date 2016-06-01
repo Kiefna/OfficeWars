@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+{# So the context variables needed #}
+{# 1. "matchups": this is the team object pairings for the bracket #}
+<h1 align="center">Initial Bracket</h1>
+<br>
+{% for matchup in matchups %}
+    <div class="row">
+        {% for team in matchup %}
+            {% if forloop.first  %}
+                <div class="col-sm-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ team }}</div>
+                        <div class="panel-body">
+                            {% for x in "xx" %}
+                                {{ mixedlist.pop }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-sm-2">
+                    <h2 id = "vs" >VS</h2> {# center this vertically and horizontally #}
+                </div>
+                <div class="col-sm-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ team }}</div>
+                        <div class="panel-body">
+                            {% for x in "xx" %}
+                                {{ mixedlist.pop }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <hr>
+{% endfor %}
+
+{#<h1>Sort Button Success</h1>#}
+
+{#<div class='row'>#}
+{##}
+{#    <div class='col-sm-6'>#}
+{##}
+{##}
+{#    {% if title %}#}
+{#    <h1 class='{% if title_align_center %}text-align-center{% endif %}'>{{ title }}</h1>#}
+{#    {% endif %}#}
+{##}
+{#    <form method='POST' action=''>{% csrf_token %}#}
+{#    {{ form|crispy }}#}
+{##}
+{#    <input class='btn btn-default' type='submit' value='Add' />#}
+{#    <a class = "btn btn-default" href = '#' >Submit</a>#}
+{#    </form>#}
+{#    </div>#}
+{##}
+{#    <div class='col-sm-6'>#}
+{##}
+{##}
+{#    {% for playername in playerList%}#}
+{#    <h1 class='{% if title_align_center %}text-align-center{% endif %}'>{{ playername }}</h1>#}
+{#    {% endfor %}#}
+{##}
+{#    </div>#}
+{##}
+{#</div>#}
+{% endblock %}

@@ -1,0 +1,166 @@
+.text-align-center {
+    text-align: center;
+}
+
+#navbar-img {
+    height: 40px;
+    padding-left: 0px;
+}
+
+#logo2 {
+    padding-bottom: 5px;
+}
+
+#navbar-container {
+    margin-left: 0px;
+    padding-left: 0px;
+}
+
+.navbar-brand > img {
+    display: inline-block;
+    height: 25px;
+}
+
+.navbar-brand {
+    padding-top: 10px;
+}
+
+.form-control {
+    padding-top: 8px;
+    font-size: 15pt;
+    border-radius: 0px;
+    border-color: black;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+#vs {
+    text-align: center;
+}
+
+@font-face {
+    font-family: Heatwerk;
+    src: url("../fonts/Heatwerk_Demo.otf");
+}
+
+@font-face {
+    font-family: Rugsnatcher;
+    src: url("../fonts/rugsnatcher_DEMO.otf");
+}
+
+@font-face {
+    font-family: Alegreya;
+    src: url("../fonts/AlegreyaSansSC-ExtraBold.ttf");
+}
+
+@font-face {
+    font-family: AxeHandel;
+    src: url("../fonts/axehandel.regular.ttf");
+}
+
+@font-face {
+    font-family: RoadMovie;
+    src: url("../fonts/ROADMOVIE_TRIAL___.ttf");
+}
+
+@font-face {
+    font-family: OSP DIN;
+    src: url("../fonts/OSP-DIN.ttf");
+}
+
+.navbar-default .navbar-nav > li > a {
+    font-family: Heatwerk;
+    font-size: 20px;
+    color: black;
+}
+
+.btn {
+    border-radius: 0px;
+    border-color: black;
+}
+
+#login-bar {
+    font-family: "OSP DIN";
+    font-size: 15pt;
+    padding-top: 10px;
+    padding-bottom: 8px;
+}
+
+.btn {
+    font-family: Rugsnatcher;
+    font-size: 17px;
+    padding-bottom: 2px;
+    /*padding-top: ;*/
+}
+
+.nav > li > a {
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-family: Heatwerk;
+}
+
+body {
+    font-family: "Impact";
+    font-size: 15pt;
+}
+
+.jumbotron {
+    background-color: rgb(121, 134, 142);
+    padding-bottom: 0px;
+}
+
+#register {
+    font-family: Rugsnatcher;
+    font-size: 17px;
+    padding-left: 5px;
+    padding-top: 8px;
+    padding-bottom: 4px;
+    padding-right: 5px;
+}
+
+#registerdiv {
+    border: 1px solid black;
+    margin-top: 8px;
+}
+
+.navbar-form {
+    padding-right: 5px;
+}
+
+#navbar_login_button {
+    background-color: transparent;
+    color: black;
+}
+
+.navbar-collapse.collapse .li {
+    padding-left: 10px;
+
+}
+
+#treasure {
+
+}
+
+#treasure-box {
+
+}
+
+#joinButton {
+    font-size: 25pt;
+    padding: 1pt;
+}
+
+#currentWars {
+    font-size:35pt;
+}
+
+#descriptor {
+    background-color: #5D8399;
+    min-height: 500px;
+    border-right: solid 1px black;
+
+}

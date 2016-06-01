@@ -1,0 +1,503 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load customFilters %}
+
+
+{% block content %}
+
+
+
+    <style>
+        nav.navbar.navbar-default.navbar-static-top {
+            margin-bottom: 0px;
+            border-bottom: 0px;
+
+        }
+
+        .col-lg-4.col-md-4.col-sm-8.col-xs-6 {
+            border-top: solid 1px;
+            background-color: white;
+            min-height: 506px;
+            max-height: 1000px;
+
+        }
+
+        .col-lg-6.col-md-6.col-sm-12.col-xs-12 {
+            border-left: solid 1px gainsboro;
+            border-top: solid 1px black;
+            border-right: solid 1px black;
+            min-height: 500px;
+            max-height: 920px;
+            background-color: white;
+        }
+
+        body {
+            background-color: #5D8399;
+        }
+
+        #descriptor_hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+            margin: 12px;
+        }
+
+        div#descriptor {
+            min-height: 500px;
+            padding-left: 15px;
+        }
+
+        #NameSpacing {
+            margin-top: 21px;
+            text-align: right;
+        }
+
+        #typeSpacing {
+            margin-top: 4px;
+            margin-bottom: 5px;
+            padding-top: 2px;
+            text-align: right;
+        }
+
+        #startdateSpacing {
+            padding-top: 8px;
+            text-align: right;
+        }
+
+        #playersSpacing {
+            padding-top: 6px;
+            text-align: right;
+        }
+
+        #descriptionSpacing {
+            text-align: right;
+
+        }
+
+        .glyphicon {
+            padding-top: 4pt;
+            padding-left: 1pt;
+        }
+
+        .addPlayer {
+            font-family: Rugsnatcher;
+            font-size: 20pt;
+        }
+
+        .center-align.card-panel {
+            display: none;
+        }
+
+        button.btn.btn-success.btn-xs {
+            margin-bottom: 4px;
+        }
+
+        .playerlist {
+            color: #FFFFFF;
+            padding-left: 5px;
+        }
+
+        .box {
+            border: solid black 1px;
+            background-color: #5d8399;
+            width: 196px;
+            max-height: 200px;
+            overflow: auto;
+
+        }
+
+        a.btn.btn-danger.btn-xs {
+            margin-bottom: 4px;
+        }
+
+        span.glyphicon.glyphicon-remove {
+            padding-left: 0px;
+        }
+
+        #buttonAdd {
+            float: right;
+            display: inline-block;
+            clear: both;
+        }
+
+        .descriptionBox {
+            border: solid black 1px;
+            margin-top: 33px;
+            padding: 5px;
+            margin-bottom: 10px;
+            overflow: auto;
+            background-color: #5d8399;
+            max-height: 500px;
+            color: white;
+        }
+
+        .placeholder {
+            height: 27px;
+
+        }
+
+        #display {
+            overflow: auto;
+        }
+
+        #placeholder2 {
+            height: 35px;
+        }
+
+        .container-fluid {
+            border: solid black 1px;
+        }
+
+        #btnAddPoints {
+            float: right;
+            display: none;
+        }
+
+        .btnAddPointsAppear {
+            float: right;
+        }
+
+        #playerpointname {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        #playerpoints {
+            float: left;
+            margin: 0px;
+        }
+
+        #leaderboardcontainer {
+            overflow: auto;
+            max-height: 815px;
+            border: none;
+        }
+
+        #rowDescript {
+            margin: 0px;
+        }
+
+        .panel-body {
+            padding: 5px;
+        }
+
+        .panel-heading {
+            padding: 5px;
+        }
+
+        .pointform {
+            float: right;
+            display: none;
+        }
+
+        .pointforminput {
+            width: 50px;
+        }
+
+        .pointAdd {
+            float: right;
+            display: flex;
+            padding-top: 17px;
+        }
+
+        #scoreboardspacing {
+            text-align: left;
+            display: inline-block;
+        }
+
+        #playerPointForm {
+            display: flex;
+        {#            margin-left: 100px;#} margin-top: 20px;
+        }
+
+        #addPointButton {
+            margin-left: 3px;
+            margin-right: 3px;
+        }
+
+        #addPointButton2 {
+
+        }
+
+        select.form-control {
+            margin-left: 3px;
+            border: 0px;
+            outline: 1px solid #000000;
+            background-color: white;
+            height: 32px;
+            margin-top: 1px;
+        }
+
+        select.form-control:focus {
+            margin-left: 3px;
+            border: 0px;
+            outline: 1px solid #000000;
+            background-color: white;
+            height: 36px;
+            margin-top: 1px;
+            padding-top: 0px;
+
+        }
+
+        input#addPoints {
+            width: 80px;
+            border: solid black 1px;
+            height: 34px;
+        }
+
+        .uplike {
+            float: right;
+            border-right: none;
+        }
+
+        .downlike {
+            float: right;
+            padding-top: 5px;
+            padding-bottom:;
+        }
+
+        .glyphicon-chevron-down {
+            padding-top: 1px;
+        }
+
+        hr {
+            margin-top: 0px;
+        }
+
+        .TourneyPanel {
+            display: inline-block;
+        }
+
+        .tourneyPlayer {
+            margin-top: 5px;
+            margin-bottom: 0px;
+        }
+
+        #tourney {
+            border: 0px;
+        }
+
+        .small_bracket {
+            border-top: solid black 2px;
+            border-right: solid black 2px;
+            border-bottom: solid black 2px;
+            height: 80px;
+            width: 20px;
+            margin-top: 15px;
+            margin-bottom: 45px;
+        }
+
+    </style>
+
+
+
+    <div class='row'>
+
+        <div id="descriptor" class='col-lg-2 col-md-2 col-sm-4 col-xs-6'>
+            <div id="rowDescript" class="row">
+                <h2 id="NameSpacing">NAME:</h2>
+            </div>
+
+            <div id="rowDescript" class="row">
+                <hr id="descriptor_hr">
+            </div>
+
+            <div id="rowDescript" class="row">
+                <h3 id="typeSpacing">TYPE:</h3>
+            </div>
+
+            <div id="rowDescript" class="row">
+                <h4 id="startdateSpacing">START DATE:</h4>
+            </div>
+
+            <div id="rowDescript" class="row">
+                <h3 id="playersSpacing">PLAYERS:</h3>
+            </div>
+
+            {% if currentuser == war.players %}
+                <div id="rowDescript" class="row">
+                    <a id="buttonAdd" href="#" class="btn btn-success btn-xs">
+                        <span class="glyphicon glyphicon-plus"><span class="addPlayer">ADD</span></span>
+                    </a>
+                </div>
+            {% else %}
+                <div id="placeholder2"></div>
+            {% endif %}
+
+            {% for x in blanklist %}
+                <h3 class="placeholder"></h3>
+            {% endfor %}
+
+            <div id="rowDescript" class="row">
+                <h4 id="descriptionSpacing">DESCRIPTION:</h4>
+            </div>
+        </div>
+
+        <div class='col-lg-4 col-md-4 col-sm-8 col-xs-6'>
+
+            <h2> {{ war.war_name }} </h2>
+            <hr>
+            <h3> {{ war.get_war_type_display }} </h3>
+            <h3> {{ war.datetime }} </h3>
+
+            <form class="center-align card-panel" id="PlayerSearch" action=""
+                  method="POST">
+                {% csrf_token %}
+                {{ form.username }}
+                {{ form.meta }}
+                <button formmethod="post" value="" class="btn btn-success btn-xs">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+                <a class="btn btn-danger btn-xs" href="javascript:history.go(0)" style="padding-bottom: 2px;">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+
+            </form>
+            <div class="box">
+                <h3 class="playerlist"> {{ war.players }} </h3>
+                {% for player in players %}
+                    {% if war.players == player.user %}
+                    {% else %}
+                        <h3 class="playerlist"> {{ player.user }} </h3>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="descriptionBox">
+                {{ war.description |safe }}
+            </div>
+
+        </div>
+
+        <div id="display" class='col-lg-6 col-md-6 col-sm-12 col-xs-12'>
+            {% if war.get_war_type_display == "Leaderboard" %}
+                <h2 id="scoreboardspacing">Scoreboard</h2>
+
+                {#                <form class="pointAdd" action="" method="POST"> {% csrf_token %}#}
+                {##}
+                {#                    <input id="addPoints" type="text" formmethod="post">#}
+                {##}
+                {#                    <select class="form-control">#}
+                {#                        <option>Test</option>#}
+                {#                    </select>#}
+                {##}
+                {#                    <button id="addPointButton" formmethod="post" value="" class="btn btn-success btn-xs">#}
+                {#                        <span class="glyphicon glyphicon-plus"></span>#}
+                {#                    </button>#}
+                {##}
+                {#                    <a id="addPointButton2" class="btn btn-danger btn-xs" href="javascript:history.go(0)"#}
+                {#                       style="padding-bottom: 2px;">#}
+                {#                        <span class="glyphicon glyphicon-remove"></span>#}
+                {#                    </a>#}
+                {##}
+                {#                </form>#}
+
+                <hr>
+                <div id="leaderboardcontainer" class="container-fluid">
+                    {% for player in players %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 id="playerpointname">{{ player.user }}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <h3 id="playerpoints">{{ player.warpoints }}</h3>
+                                {% if currentuser == war.players %}
+
+                                    <a id="downlike"
+                                       href="{% url "war_like" war_name=war.war_name user=player.user vote="down" %}"
+                                       class="btn btn-danger btn-xs downlike">
+                                        <span class="glyphicon glyphicon-chevron-down"></span>
+                                    </a>
+
+                                    <a id="uplike"
+                                       href="{% url "war_like" war_name=war.war_name user=player.user vote="up" %}"
+                                       class="btn btn-success btn-xs uplike">
+                                        <span class="glyphicon glyphicon-chevron-up"></span>
+                                    </a>
+
+                                    {#                                    <button value="" class="btn btn-success btn-xs btnAddPointsAppear">#}
+                                    {#                                        <span class="glyphicon glyphicon-plus"></span>#}
+                                    {#                                    </button>#}
+                                    {##}
+                                    {#                                    <form class="pointform"> {% csrf_token %}#}
+                                    {#                                        <input class="pointforminput" formmethod="post" type="text" name="points">#}
+                                    {#                                        <button formmethod="post" id="btnAddPoints" value="" class="btn btn-success btn-xs">#}
+                                    {#                                            <span class="glyphicon glyphicon-plus"></span>#}
+                                    {#                                        </button>#}
+                                    {#                                    </form>#}
+
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if war.get_war_type_display == "Tournament" %}
+                <h2 id="scoreboardspacing">Pairings</h2>
+                <hr>
+                <div class="row" id="tourney">
+                    <div class="col-md-2">
+                        {% for player in players|shuffle %}
+                            {% if player %}
+                                <div class="panel panel-default TourneyPanel">
+                                    <div class="panel-heading">
+                                        <h3 class="tourneyPlayer">{{ player }}</h3>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-2">
+                    {% for pair in players|pair %}
+                        <div class = "small_bracket"></div>
+                    {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+    </div>
+
+    </div>
+
+    <script>
+        $('#buttonAdd').click(function () {
+            $("#buttonAdd").css("display", "none");
+            $(".center-align.card-panel").css("display", "inline");
+            $("#descriptionSpacing").css("display", "none");
+            $(".descriptionBox").css("display", "none");
+
+
+            {#            var brickNumber = $(this).data('number');#}
+            {#            if (brickNumber === 44) {#}
+            {#                whenClicked(this);#}
+            {#            }#}
+            {#            else {#}
+            {#                $(this).toggleClass('active');#}
+            {#            }#}
+        });
+
+        {#        $('#downlike').click(function () {#}
+        {#            $.ajax({#}
+        {#                type: "POST",#}
+        {#                url: "{% url 'war_view' %}",#}
+        {#                data: {'points': $(this).attr('data-points'), 'war_name': $(this).attr('data-war'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},#}
+        {#                dataType: "sql",#}
+        {#                success: function (response) {#}
+        {#                    alert(response.message);#}
+        {#                    alert('Company likes count is now ' + response.likes_count);#}
+        {#                },#}
+        {#                error: function (rs, e) {#}
+        {#                    alert(rs.responseText);#}
+        {#                }#}
+        {#            });#}
+        {#        });#}
+
+        {#        $('.btnAddPointsAppear').click(function () {#}
+        {#            $(".btnAddPointsAppear").css("display", "none");#}
+        {#            $("#btnAddPoints").css("display", "inline");#}
+        {#            $(".pointform").css("display", "inline");#}
+        {#        });#}
+    </script>
+
+{% endblock %}
