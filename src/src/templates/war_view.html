@@ -253,7 +253,6 @@
         .downlike {
             float: right;
             padding-top: 5px;
-            padding-bottom:;
         }
 
         .glyphicon-chevron-down {
@@ -271,6 +270,9 @@
         .tourneyPlayer {
             margin-top: 5px;
             margin-bottom: 0px;
+            float: right;
+            padding-right: 5px;
+            padding-left: 3px;
         }
 
         #tourney {
@@ -285,6 +287,23 @@
             width: 20px;
             margin-top: 15px;
             margin-bottom: 45px;
+        }
+
+        .loss {
+            float: left;
+            padding: 0px;
+            background-color: transparent;
+            border: none;
+        }
+
+        .lossbutton {
+            background-color: transparent;
+            border: none;
+        }
+
+        span.glyphicon.glyphicon-remove.lossbutton {
+            padding-left: 3px;
+            padding-top: 7px;
         }
 
     </style>
@@ -437,26 +456,29 @@
                 <h2 id="scoreboardspacing">Pairings</h2>
                 <hr>
                 <div class="row" id="tourney">
-                    <div class="col-md-2">
-                        {% for player in players|shuffle %}
+                    <div class="col-md-3">
+                        {% for player in currentPlayers %}
                             {% if player %}
                                 <div class="panel panel-default TourneyPanel">
-                                    <div class="panel-heading">
-                                        <h3 class="tourneyPlayer">{{ player }}</h3>
-                                    </div>
+
+                                    <a href="#" class="btn loss">
+                                        <span class="glyphicon glyphicon-remove lossbutton"></span>
+                                    </a>
+                                    <h3 class="tourneyPlayer">{{ player }}</h3>
+
                                 </div>
                             {% endif %}
                         {% endfor %}
                     </div>
 
                     <div class="col-md-2">
-                    {% for pair in players|pair %}
-                        <div class = "small_bracket"></div>
-                    {% endfor %}
+                        {% for pair in currentBracket %}
+                            <div class="small_bracket"></div>
+                        {% endfor %}
                     </div>
                 </div>
             {% endif %}
-    </div>
+        </div>
 
     </div>
 

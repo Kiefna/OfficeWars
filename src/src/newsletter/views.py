@@ -7,7 +7,7 @@ from django.core.serializers import json
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from .models import UserProfile, Tournament
+from .models import UserProfile, Bracket
 from django.template.context_processors import csrf
 from django.contrib.admin.options import IS_POPUP_VAR
 from ajax_select.fields import autoselect_fields_check_can_add
@@ -251,7 +251,7 @@ def war_main(request):
     if not request.user.is_anonymous():
         if form.is_valid():
             # form.save()
-            # print request.POST['email'] #not recommended
+            # print request.POST['email'] # not recommended
             instance = form.save(commit=False)
 
             # Extraneous useless meddling - Fidgeting
@@ -276,7 +276,14 @@ def war_main(request):
             a = UserProfile(user=request.user, war=instance, warpoints=0)
             a.save()
 
-            # b = Tournament(type=instance.war_type)
+            b = Bracket(tournament=instance, players=instance.players, bracket_row="base")
+            b.save()
+
+            print "###############"
+            print b
+            print b.players
+            print b.tournament.war_name
+            print "###############"
 
             context = {
                 "title": title,
@@ -340,7 +347,6 @@ def war_list(request):
 
 
 def war_view(request, war_name, user="default", vote="default"):
-
     if (request.method == "GET") and ((user != "default") and (vote == "up")):
         wartemp2 = War.objects.filter(war_name=war_name)
         for item in wartemp2[0].userprofile_set.all():
@@ -387,6 +393,8 @@ def war_view(request, war_name, user="default", vote="default"):
                 if flag:
                     a = UserProfile(user=playertemp[0], war=wartemp[0], warpoints=0)
                     a.save()
+                    b = Bracket(players=playertemp[0], tournament=wartemp[0], bracket_row="base")
+                    b.save()
                     # print "------------"
                     # print a.user
                     # print a.war.war_name
@@ -411,6 +419,87 @@ def war_view(request, war_name, user="default", vote="default"):
                     warLeaderboardList.append(player)
 
                 warLeaderboardList.append(war.players)
+
+            if wartemp[0].get_war_type_display() == "Tournament":
+                pairs = []
+                currentPlayers = []
+                for bracket in wartemp[0].bracket_set.all():
+                    if bracket.bracket_row == "base":
+                        currentPlayers.append(bracket.players)
+
+                if len(currentPlayers) % 2 == 0:
+                    playerit = iter(currentPlayers)
+                    for player in playerit:
+                        pairs.append([player, playerit.next()])
+
+                else:
+                    playerit = iter(currentPlayers)
+
+                    for player in playerit:
+                        try:
+                            pairs.append([player, playerit.next()])
+                        except IndexError:
+                            print "Error"
+                            pairs.append([player])
+
+                            # print "bracket: " + str(bracket)
+                            # print bracket.players
+                            # if bracket.bracket_row == "base":
+                            #     print "wowowowow"
+                            #     bracketBase = bracket
+                            #
+                            #     if isinstance(bracketBase.players, User):
+                            #         continue
+                            #
+                            #     elif len(bracketBase.players) % 2 == 0:
+                            #         playerit = iter(bracket.players)
+                            #         for player in playerit:
+                            #             pairs.append([player, playerit.next()])
+                            #
+                            #     else:
+                            #
+                            #         playerit = iter(bracket.players)
+                            #
+                            #         for player in playerit:
+                            #             try:
+                            #                 pairs.append([player, playerit.next()])
+                            #             except IndexError:
+                            #                 print "Error"
+                            #                 pairs.append([player])
+                            #
+                            # else:
+                            #     pairs = []
+
+                print "|||||||||||||||"
+                for bracket in Bracket.objects.all():
+                    print bracket.players
+                print "||||||||||||||2"
+                for bracket in wartemp[0].bracket_set.all():
+                    print "bracket: " + str(bracket)
+
+                blanklist = []
+                x = 0
+                while (x < len(wartemp[0].userprofile_set.all()) - 1) and (x < 3):
+                    print "blanklist:" + str(x)
+                    blanklist.append([])
+                    x += 1
+
+                # if isinstance(bracketBase.players, User):
+                #     currentPlayers = [bracketBase.players]
+                # else:
+                #     currentPlayers = bracketBase.players
+
+                context = {
+                    "war": war,
+                    "form": form,
+                    "players": wartemp[0].userprofile_set.all().order_by('-warpoints'),
+                    "currentuser": request.user,
+                    "blanklist": blanklist,
+                    "currentBracket": pairs,
+                    "currentPlayers": currentPlayers,
+                }
+
+                return render(request, "war_view.html", context)
 
             blanklist = []
             x = 0

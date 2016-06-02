@@ -3,6 +3,14 @@
 
 {% block content %}
 
+    <script>
+        $(document).ready(function () {
+            $('#navbar-img').animate({left: '1000px'}, "fast")
+
+
+        });
+    </script>
+
     <style>
         h1.warmove {
             margin: 0px;
@@ -22,6 +30,21 @@
 
         .panelLeft {
             float: left;
+        }
+
+        .participateWar {
+            background-color: #5d8399;
+            border: black solid 1px;
+            border-radius: 4px;
+        }
+
+        #currentWars2 {
+            font-size: 35pt;
+            color: white;
+        }
+
+        a:hover {
+            text-decoration: none;
         }
 
     </style>
@@ -52,8 +75,8 @@
             {% endfor %}
         </div>
 
-        <div class='col-sm-6'>
-            <h1 id="currentWars">Participating Wars</h1>
+        <div class='col-sm-6 participateWar'>
+            <h1 id="currentWars2">Participating Wars</h1>
             <hr>
             {% for item2 in queryset2 %}
                 {% if item2.war.players == item2.user %}
@@ -84,23 +107,5 @@
 
     </div>
 
-    {#    <script>#}
-    {#        $('.warmove').click(function (e) {#}
-    {#            $('#navbar-img').animate({left: '100px'}, "fast")#}
-    {#        e.stopPropagation();    #}
-    {##}
-    {#            $("#buttonAdd").css("display", "none");#}
-    {#            $(".center-align.card-panel").css("display", "inline");#}
-    {##}
-    {##}
-    {#            var brickNumber = $(this).data('number');#}
-    {#            if (brickNumber === 44) {#}
-    {#                whenClicked(this);#}
-    {#            }#}
-    {#            else {#}
-    {#                $(this).toggleClass('active');#}
-    {#            }#}
-    {#        });#}
-    {#    </script>#}
 
 {% endblock %}

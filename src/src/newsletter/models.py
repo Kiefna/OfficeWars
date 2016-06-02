@@ -54,16 +54,13 @@ class Profile(models.Model):
     profilePicture = models.FileField(upload_to='uploads/')
 
 
-class Tournament(models.Model):
-    type = models.CharField(max_length=100)
-    players = []
-
-
 class Bracket(models.Model):
-    tournament = models.ForeignKey(Tournament)
+    tournament = models.ForeignKey(War)
     players = models.ForeignKey(User)
-    min_size = models.IntegerField()
-    bracket_type = models.CharField(max_length=100)
+    min_size = models.IntegerField(null=True)
+    bracket_type = models.CharField(max_length=100, null=True)
+    bracket_row = models.CharField(max_length=100)
+
 
 # class Player(models.Model):
 #     player_name = models.CharField(max_length=100)
