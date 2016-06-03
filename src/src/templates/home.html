@@ -16,50 +16,57 @@
             color: #FFF;
         }
 
+        .row {
+            height: 400px;
+        }
+
+        .flag {
+            border-top: solid black 3px;
+        }
+
     {% endblock %}
 </style>
 
 
 
 {% block jumbotron %}
-    {% if not request.user.is_authenticated %}
 
-        <div id="treasure-box" class="jumbotron">
-            <div class="container">
-                <div class="row">
-                    <div class='col-sm-6'>
-                        <h3>Welcome to OfficeWars, an app that keeps track of office warfare and competition. For the
-                            competitive and unnecessarily Awesome. </h3>
-                        <p>Those in search of something to reinvigorate office antics look no further!</p>
-                    </div>
-                    <div class='col-sm-6'>
+    <div id="treasure-box" class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class='col-sm-6'>
+                    <h3>Welcome to OfficeWars, an app that keeps track of office warfare and competition. For the
+                        competitive and unnecessarily Awesome. </h3>
+                    <img class="flag" src="{% static 'img/OfficeWars_Banner.png' %}"/>
+                </div>
+                <div class='col-sm-6'>
 
-                    </div>
                 </div>
             </div>
         </div>
-    {% endif %}
+    </div>
 
-{#    <script>#}
-{#        $('.click').click(function () {#}
-{#            $('#navbar-img').animate({left: '100px'}, "fast", 500,function() {#}
-{#            //thing to do when you animation is finished e.g.#}
-{#            location.href = '/war_list/';#}
-{#            });#}
-{#            #}
-{##}
-            {#            $("#buttonAdd").css("display", "none");#}
-            {#            $(".center-align.card-panel").css("display", "inline");#}
-{##}
-{##}
-            {#            var brickNumber = $(this).data('number');#}
-            {#            if (brickNumber === 44) {#}
-            {#                whenClicked(this);#}
-            {#            }#}
-            {#            else {#}
-            {#                $(this).toggleClass('active');#}
-            {#            }#}
-{#        });#}
-{#    </script>#}
+
+    {#    <script>#}
+    {#        $('.click').click(function () {#}
+    {#            $('#navbar-img').animate({left: '100px'}, "fast", 500,function() {#}
+    {#            //thing to do when you animation is finished e.g.#}
+    {#            location.href = '/war_list/';#}
+    {#            });#}
+    {#            #}
+    {##}
+    {#            $("#buttonAdd").css("display", "none");#}
+    {#            $(".center-align.card-panel").css("display", "inline");#}
+    {##}
+    {##}
+    {#            var brickNumber = $(this).data('number');#}
+    {#            if (brickNumber === 44) {#}
+    {#                whenClicked(this);#}
+    {#            }#}
+    {#            else {#}
+    {#                $(this).toggleClass('active');#}
+    {#            }#}
+    {#        });#}
+    {#    </script>#}
 {% endblock %}
 

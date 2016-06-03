@@ -17,7 +17,7 @@
         .col-lg-4.col-md-4.col-sm-8.col-xs-6 {
             border-top: solid 1px;
             background-color: white;
-            min-height: 506px;
+            min-height: 500px;
             max-height: 1000px;
 
         }
@@ -171,19 +171,14 @@
             top: 35%;
 
             text-shadow: 0 1px 0 hsl(174, 5%, 80%),
-            0 2px 0 hsl(174, 5%, 75%),
-            0 3px 0 hsl(174, 5%, 70%),
-            0 4px 0 hsl(174, 5%, 66%),
-            0 5px 0 hsl(174, 5%, 64%),
-            0 6px 0 hsl(174, 5%, 62%),
-            0 7px 0 hsl(174, 5%, 61%),
-            0 8px 0 hsl(174, 5%, 60%),
-            0 0 5px rgba(0, 0, 0, .05),
-            0 1px 3px rgba(0, 0, 0, .2),
-            0 3px 5px rgba(0, 0, 0, .2),
-            0 5px 10px rgba(0, 0, 0, .2),
-            0 10px 10px rgba(0, 0, 0, .2),
-            0 20px 20px rgba(0, 0, 0, .3);
+{#            0 1px 0 hsl(174, 5%, 75%),#}
+{#            0 2px 0 hsl(174, 5%, 70%),#}
+{#            0 3px 0 hsl(174, 5%, 66%),#}
+{#            0 4px 0 hsl(174, 5%, 64%),#}
+{#            0 5px 0 hsl(174, 5%, 62%),#}
+{#            0 6px 0 hsl(174, 5%, 61%),#}
+            0 2px 0 hsl(174, 5%, 60%);
+        {#            0 0 4px rgba(0, 0, 0, .05),#}{#            0 1px 3px rgba(0, 0, 0, .2),#}{#            0 3px 5px rgba(0, 0, 0, .2),#}{#            0 5px 10px rgba(0, 0, 0, .2),#}{#            0 10px 10px rgba(0, 0, 0, .2),#}{#            0 20px 20px rgba(0, 0, 0, .3);#}
         }
 
         #leaderboardcontainer {
@@ -291,7 +286,9 @@
             margin-bottom: 0px;
             float: right;
             padding-right: 5px;
-            padding-left: 3px;
+            padding-left: 5px;
+            min-width: 50px;
+            text-align: center;
         }
 
         .tourneyPlayer2 {
@@ -299,9 +296,11 @@
             margin-bottom: 0px;
             float: right;
             padding-right: 5px;
-            padding-left: 3px;
+            padding-left: 5px;
             color: darkgrey;
             text-decoration: line-through;
+            min-width: 73px;
+            text-align: center;
         }
 
         #tourney {
@@ -342,6 +341,31 @@
 
         .lower2 {
             margin-top: 10px;
+        }
+
+        @keyframes example {
+            0% {
+                color: #ffb840;
+            }
+            25% {
+                color: #d6ff4d;
+            }
+            50% {
+                color: #53d8ff;
+            }
+            100% {
+                color: #80577d;
+            }
+        }
+
+        /* The element to apply the animation to */
+        .winner {
+            font-size: 50px;
+            margin-top: 0px;
+            color: red;
+            animation-name: example;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
         }
 
     </style>
@@ -491,28 +515,36 @@
             {% endif %}
 
             {% if war.get_war_type_display == "Tournament" %}
-                <h2 id="scoreboardspacing">Pairings</h2>
+                <h2 id="scoreboardspacing">Bracket</h2>
                 <hr class="lower2">
                 <div class="row" id="tourney">
                     <div class="col-md-3">
                         {% for bracket in currentBracketList %}
-                            {% if bracket.bracket_type != "LOSS"%}
-                                <div class="panel panel-default TourneyPanel">
+                            {% if bracket.bracket_type != "LOSS" %}
+                                {% if currentPlayers|length == 1 %}
+                                    <div class="panel panel-default TourneyPanel">
 
-                                    <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"
-                                       class="btn loss">
-                                        <span class="glyphicon glyphicon-remove lossbutton"></span>
-                                    </a>
-                                    <h3 class="tourneyPlayer">{{ bracket.players }}</h3>
+                                        <h3 class="tourneyPlayer">{{ bracket.players }}</h3>
 
-                                </div>
+                                    </div>
+                                {% else %}
+                                    <div class="panel panel-default TourneyPanel">
+
+                                        <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"
+                                           class="btn loss">
+                                            <span class="glyphicon glyphicon-remove lossbutton"></span>
+                                        </a>
+                                        <h3 class="tourneyPlayer">{{ bracket.players }}</h3>
+
+                                    </div>
+                                {% endif %}
                             {% else %}
                                 <div class="panel panel-default TourneyPanel">
 
-                                    <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"
-                                       class="btn loss">
-                                        <span class="glyphicon glyphicon-remove lossbutton"></span>
-                                    </a>
+                                    {#                                    <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"#}
+                                    {#                                       class="btn loss">#}
+                                    {#                                        <span class="glyphicon glyphicon-remove lossbutton"></span>#}
+                                    {#                                    </a>#}
                                     <h3 class="tourneyPlayer2">{{ bracket.players }}</h3>
 
                                 </div>
@@ -520,13 +552,13 @@
                         {% endfor %}
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-8">
                         {% for pair in currentBracket %}
                             {% if pair|length == 2 %}
                                 <div class="small_bracket"></div>
-                            {% elif pair|length == 1  and currentBracket|length == 1 %}
+                            {% elif pair|length == 1  and currentBracket|length == 1 and players|length != 1 %}
                                 {% for user2 in pair %}
-                                    <h4>Winner is {{ user2 }}!</h4>
+                                    <h4 class="winner">The Winner is {{ user2 }}!</h4>
                                 {% endfor %}
 
                             {% endif %}

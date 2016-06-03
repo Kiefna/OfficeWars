@@ -405,16 +405,37 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
         current_bracket = Bracket.objects.filter(players=current_user, tournament=current_war)
         # current_bracket[0].delete()
         bracket2 = current_bracket[0]
-        print bracket2.bracket_type
         bracket2.bracket_type = "LOSS"
-        print bracket2.bracket_type
         bracket2.save()
 
-        print "\\\\\\\\\\\\"
-        print current_bracket[0]
-        print current_bracket[0].players
-        print current_bracket[0].bracket_type
-        print "\\\\\\\\\\\\"
+        counter = 0
+        for bracket in Bracket.objects.filter(tournament=current_war):
+
+            if bracket.bracket_type == "LOSS":
+                counter += 1
+
+        # if (len(current_war[0].userprofile_set.all()) % 2) == 0:
+        #     print (len(current_war[0].userprofile_set.all()) / 4)
+        #     print len(Bracket.objects.filter(tournament=current_war))
+        #     if len(Bracket.objects.filter(tournament=current_war)) == (
+        #                 len(current_war[0].userprofile_set.all()) / 2):
+        #         if counter == 2:
+        #             print "coconut"
+        #             for bracket3 in Bracket.objects.filter(tournament=current_war):
+        #                 if bracket3.bracket_type == "LOSS":
+        #                     bracket3.delete()
+
+        if (len(current_war[0].bracket_set.all()) % 2) == 0:
+            if counter >= (len(current_war[0].bracket_set.all()) / 2):
+                for bracket2 in Bracket.objects.filter(tournament=current_war):
+                    if bracket2.bracket_type == "LOSS":
+                        bracket2.delete()
+
+        else:
+            if counter == ((len(current_war[0].bracket_set.all()) - 1)/2):
+                for bracket2 in Bracket.objects.filter(tournament=current_war):
+                    if bracket2.bracket_type == "LOSS":
+                        bracket2.delete()
 
     try:
         # print "trying"
@@ -461,7 +482,7 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
                             print "Error"
                             pairs.append([player])
                         except StopIteration:
-                            print "Error"
+                            print "Error2"
                             pairs.append([player])
 
                             # print "bracket: " + str(bracket)
@@ -491,13 +512,6 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
                             #
                             # else:
                             #     pairs = []
-
-                print "|||||||||||||||"
-                for bracket in Bracket.objects.all():
-                    print bracket.players
-                print "||||||||||||||2"
-                for bracket in wartemp[0].bracket_set.all():
-                    print "bracket: " + str(bracket)
 
                 blanklist = []
                 x = 0

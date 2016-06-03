@@ -26,6 +26,18 @@ class WarForm(forms.ModelForm):
         }
         fields = ['war_name', 'war_type', 'value', 'datetime', "description"]  # 'status'
 
+    # def clean_war_name(self):
+    #     # cleaned_data = super(WarForm, self).clean()
+    #     war_name = self.cleaned_data.get('war_name')
+    #     checkwarname = War.objects.filter(war_name=war_name)
+    #     war_name = war_name.replace(" ", "-")
+    #     if checkwarname[0]:
+    #         raise forms.ValidationError("That War Name is already in use. Please use a Different War Name")
+    #     else:
+    #         return war_name
+
+
+
 
 class PlayerSearch(forms.ModelForm):
     username = AutoCompleteField('username', show_help_text=False)
@@ -39,6 +51,7 @@ class SignUpForm(forms.ModelForm):
     class Meta:
         model = SignUp
         fields = ['full_name', 'email']
+
     # exclude = ['full_name']
 
     def clean_email(self):
@@ -55,4 +68,3 @@ class SignUpForm(forms.ModelForm):
         full_name = self.cleaned_data.get('full_name')
         # write validation code.
         return full_name
-

@@ -10,6 +10,7 @@ body {
     /*background-repeat: no-repeat;*/
     /*background-size: 40% 50px;*/
     border-color: #000000;
+    border-bottom: solid black 2px;
 }
 
 .navbar-brand {

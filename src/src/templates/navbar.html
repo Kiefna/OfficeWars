@@ -1,5 +1,24 @@
    {% load staticfiles %}
 
+<style>
+    .hvr-grow {
+    display: inline-block;
+    vertical-align: middle;
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    transition-duration: 0.3s;
+    transition-property: transform;
+}
+
+    .hvr-grow:hover,
+    .hvr-grow:focus,
+    .hvr-grow:active {
+        transform: scale(1.1);
+}
+</style>
+
    <!-- Static navbar -->
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container" id = "navbar-container" >
@@ -10,7 +29,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'home' %}"> <img id = "navbar-img" class = "logo" src="{% static 'img/Arrows_Navbar.png' %}" /> <img id = "logo2" src="{% static 'img/Office_Wars_Logo.png' %}" /></a>
+          <a class="navbar-brand" href="{% url 'home' %}"> <img id = "navbar-img" class = "logo" src="{% static 'img/Arrows_Navbar.png' %}" /> <img class="hvr-grow" id = "logo2" src="{% static 'img/Office_Wars_Logo.png' %}" /></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -56,3 +75,9 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+
+<script>
+    $().hover(function() {
+
+    });
+</script>

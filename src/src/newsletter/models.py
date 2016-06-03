@@ -30,12 +30,14 @@ class War(models.Model):
     war_name = models.CharField("War Name", max_length=100)
     war_type = models.CharField("Type of War", max_length=2, choices=WAR_CHOICES, default=TOURNAMENT)
     # status = models.BooleanField("Starts Immediately")  # help_text="This should be checkmarked...
-    value = models.IntegerField("Office Points", help_text="This is how much it contributes to the Office Leaderboard")
+    value = models.IntegerField("Office Points", help_text="This is how much it contributes to the Office Leaderboard",
+                                null=True)
     datetime = models.DateTimeField("Start Date & Time")
     players = models.ForeignKey(settings.AUTH_USER_MODEL)
     description = HTMLField("War Description", max_length=1000, null=True, default="No Description")
     # players = models.ForeignKey(Player)
     playerPoints = models.IntegerField(null=True)
+
 
 # class PlayerSearch(models.Model):
 #
@@ -60,7 +62,6 @@ class Bracket(models.Model):
     min_size = models.IntegerField(null=True)
     bracket_type = models.CharField(max_length=100, null=True)
     bracket_row = models.CharField(max_length=100)
-
 
 # class Player(models.Model):
 #     player_name = models.CharField(max_length=100)
