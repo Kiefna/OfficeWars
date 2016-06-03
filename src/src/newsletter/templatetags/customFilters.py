@@ -39,3 +39,8 @@ def shuffle(players):
     newlist = random.sample(playerlist, len(playerlist))
     print newlist
     return newlist
+
+# @register.filter(name="getBracket")
+# def getBracket(player):
+#     player.
+#     return newlist

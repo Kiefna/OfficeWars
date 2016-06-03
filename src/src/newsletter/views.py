@@ -346,7 +346,7 @@ def war_list(request):
         return render(request, "about.html", context)
 
 
-def war_view(request, war_name, user="default", vote="default"):
+def war_view(request, war_name, user="default", vote="default", loss="False"):
     if (request.method == "GET") and ((user != "default") and (vote == "up")):
         wartemp2 = War.objects.filter(war_name=war_name)
         for item in wartemp2[0].userprofile_set.all():
@@ -399,6 +399,23 @@ def war_view(request, war_name, user="default", vote="default"):
                     # print a.user
                     # print a.war.war_name
 
+    if (request.method == "GET") and ((user != "default") and (vote == "True")):
+        current_user = User.objects.filter(username=user)
+        current_war = War.objects.filter(war_name=war_name)
+        current_bracket = Bracket.objects.filter(players=current_user, tournament=current_war)
+        # current_bracket[0].delete()
+        bracket2 = current_bracket[0]
+        print bracket2.bracket_type
+        bracket2.bracket_type = "LOSS"
+        print bracket2.bracket_type
+        bracket2.save()
+
+        print "\\\\\\\\\\\\"
+        print current_bracket[0]
+        print current_bracket[0].players
+        print current_bracket[0].bracket_type
+        print "\\\\\\\\\\\\"
+
     try:
         # print "trying"
         form = PlayerSearch(request.POST or None)
@@ -423,9 +440,11 @@ def war_view(request, war_name, user="default", vote="default"):
             if wartemp[0].get_war_type_display() == "Tournament":
                 pairs = []
                 currentPlayers = []
+                currentBracketList = []
                 for bracket in wartemp[0].bracket_set.all():
                     if bracket.bracket_row == "base":
                         currentPlayers.append(bracket.players)
+                        currentBracketList.append(bracket)
 
                 if len(currentPlayers) % 2 == 0:
                     playerit = iter(currentPlayers)
@@ -439,6 +458,9 @@ def war_view(request, war_name, user="default", vote="default"):
                         try:
                             pairs.append([player, playerit.next()])
                         except IndexError:
+                            print "Error"
+                            pairs.append([player])
+                        except StopIteration:
                             print "Error"
                             pairs.append([player])
 
@@ -497,6 +519,7 @@ def war_view(request, war_name, user="default", vote="default"):
                     "blanklist": blanklist,
                     "currentBracket": pairs,
                     "currentPlayers": currentPlayers,
+                    "currentBracketList": currentBracketList,
                 }
 
                 return render(request, "war_view.html", context)

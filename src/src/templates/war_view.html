@@ -163,8 +163,27 @@
         }
 
         #playerpoints {
+            font-size: 35px;
+            display: inline-block;
             float: left;
             margin: 0px;
+            padding-left: 5px;
+            top: 35%;
+
+            text-shadow: 0 1px 0 hsl(174, 5%, 80%),
+            0 2px 0 hsl(174, 5%, 75%),
+            0 3px 0 hsl(174, 5%, 70%),
+            0 4px 0 hsl(174, 5%, 66%),
+            0 5px 0 hsl(174, 5%, 64%),
+            0 6px 0 hsl(174, 5%, 62%),
+            0 7px 0 hsl(174, 5%, 61%),
+            0 8px 0 hsl(174, 5%, 60%),
+            0 0 5px rgba(0, 0, 0, .05),
+            0 1px 3px rgba(0, 0, 0, .2),
+            0 3px 5px rgba(0, 0, 0, .2),
+            0 5px 10px rgba(0, 0, 0, .2),
+            0 10px 10px rgba(0, 0, 0, .2),
+            0 20px 20px rgba(0, 0, 0, .3);
         }
 
         #leaderboardcontainer {
@@ -275,6 +294,16 @@
             padding-left: 3px;
         }
 
+        .tourneyPlayer2 {
+            margin-top: 5px;
+            margin-bottom: 0px;
+            float: right;
+            padding-right: 5px;
+            padding-left: 3px;
+            color: darkgrey;
+            text-decoration: line-through;
+        }
+
         #tourney {
             border: 0px;
         }
@@ -283,16 +312,16 @@
             border-top: solid black 2px;
             border-right: solid black 2px;
             border-bottom: solid black 2px;
-            height: 80px;
+            height: 60px;
             width: 20px;
             margin-top: 15px;
-            margin-bottom: 45px;
+            margin-bottom: 58px;
         }
 
         .loss {
             float: left;
             padding: 0px;
-            background-color: transparent;
+            background-color: #d7d7e2;
             border: none;
         }
 
@@ -304,6 +333,15 @@
         span.glyphicon.glyphicon-remove.lossbutton {
             padding-left: 3px;
             padding-top: 7px;
+            padding-right: 3px;
+        }
+
+        .lower {
+            margin-top: 20px;
+        }
+
+        .lower2 {
+            margin-top: 10px;
         }
 
     </style>
@@ -355,7 +393,7 @@
         <div class='col-lg-4 col-md-4 col-sm-8 col-xs-6'>
 
             <h2> {{ war.war_name }} </h2>
-            <hr>
+            <hr class="lower">
             <h3> {{ war.get_war_type_display }} </h3>
             <h3> {{ war.datetime }} </h3>
 
@@ -411,7 +449,7 @@
                 {##}
                 {#                </form>#}
 
-                <hr>
+                <hr class="lower2">
                 <div id="leaderboardcontainer" class="container-fluid">
                     {% for player in players %}
                         <div class="panel panel-default">
@@ -454,17 +492,28 @@
 
             {% if war.get_war_type_display == "Tournament" %}
                 <h2 id="scoreboardspacing">Pairings</h2>
-                <hr>
+                <hr class="lower2">
                 <div class="row" id="tourney">
                     <div class="col-md-3">
-                        {% for player in currentPlayers %}
-                            {% if player %}
+                        {% for bracket in currentBracketList %}
+                            {% if bracket.bracket_type != "LOSS"%}
                                 <div class="panel panel-default TourneyPanel">
 
-                                    <a href="#" class="btn loss">
+                                    <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"
+                                       class="btn loss">
                                         <span class="glyphicon glyphicon-remove lossbutton"></span>
                                     </a>
-                                    <h3 class="tourneyPlayer">{{ player }}</h3>
+                                    <h3 class="tourneyPlayer">{{ bracket.players }}</h3>
+
+                                </div>
+                            {% else %}
+                                <div class="panel panel-default TourneyPanel">
+
+                                    <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"
+                                       class="btn loss">
+                                        <span class="glyphicon glyphicon-remove lossbutton"></span>
+                                    </a>
+                                    <h3 class="tourneyPlayer2">{{ bracket.players }}</h3>
 
                                 </div>
                             {% endif %}
@@ -473,7 +522,15 @@
 
                     <div class="col-md-2">
                         {% for pair in currentBracket %}
-                            <div class="small_bracket"></div>
+                            {% if pair|length == 2 %}
+                                <div class="small_bracket"></div>
+                            {% elif pair|length == 1  and currentBracket|length == 1 %}
+                                {% for user2 in pair %}
+                                    <h4>Winner is {{ user2 }}!</h4>
+                                {% endfor %}
+
+                            {% endif %}
+
                         {% endfor %}
                     </div>
                 </div>
@@ -488,16 +545,11 @@
             $(".center-align.card-panel").css("display", "inline");
             $("#descriptionSpacing").css("display", "none");
             $(".descriptionBox").css("display", "none");
-
-
-            {#            var brickNumber = $(this).data('number');#}
-            {#            if (brickNumber === 44) {#}
-            {#                whenClicked(this);#}
-            {#            }#}
-            {#            else {#}
-            {#                $(this).toggleClass('active');#}
-            {#            }#}
         });
+
+        {#        $('span.glyphicon.glyphicon-remove.lossbutton').click(function() {#}
+        {#            $(".panel.panel-default.TourneyPanel").css("opacity", "0")#}
+        {#        });#}
 
         {#        $('#downlike').click(function () {#}
         {#            $.ajax({#}

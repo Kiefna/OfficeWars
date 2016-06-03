@@ -19,6 +19,8 @@ urlpatterns = [
     url(r'^war_view/$', 'newsletter.views.war_view', name='war_view'),
     url(r'^war_playerview/(?P<war_name>[\w.@+-]+)', 'newsletter.views.war_view', name='war_playerview'),
     url(r'^war_view/(?P<war_name>[\w.@+-]+)/(?P<user>[\w.@+-]+)/(?P<vote>[\w.@+-]+)', 'newsletter.views.war_view', name='war_like'),
+    url(r'^war_view/(?P<war_name>[\w.@+-]+)/(?P<user>[\w.@+-]+)/(?P<loss>[\w.@+-]+)', 'newsletter.views.war_view',
+        name='war_loss'),
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^tinymce/', include('tinymce.urls')),
 
