@@ -313,7 +313,7 @@ def war_list(request):
     if request.user.is_anonymous():
         # print "aloha"
         title = "Current Wars"
-        queryset = War.objects.all().order_by('datetime')[:30]
+        queryset = War.objects.order_by('datetime')[:30]
         context = {
             "title": title,
             "queryset": queryset,
@@ -324,7 +324,7 @@ def war_list(request):
 
     else:
         title = "Your Wars"
-        queryset = War.objects.all().order_by('datetime').filter(players=request.user)
+        queryset = War.objects.order_by('datetime').filter(players=request.user)
         queryset2 = UserProfile.objects.filter(user=request.user)
         # print queryset
         # print queryset2

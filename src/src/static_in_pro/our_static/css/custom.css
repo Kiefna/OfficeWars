@@ -164,3 +164,15 @@ body {
     border-right: solid 1px black;
 
 }
+
+.navbar-static-top {
+    margin-bottom: 0px;
+}
+
+.container {
+    margin-top: 19px;
+}
+
+div#navbar-container {
+    margin-top: 0px;
+}

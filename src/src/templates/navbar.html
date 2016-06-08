@@ -1,83 +1,163 @@
-   {% load staticfiles %}
+{% load staticfiles %}
+
 
 <style>
     .hvr-grow {
-    display: inline-block;
-    vertical-align: middle;
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    transition-duration: 0.3s;
-    transition-property: transform;
-}
+        display: inline-block;
+        vertical-align: middle;
+        transform: translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        backface-visibility: hidden;
+        -moz-osx-font-smoothing: grayscale;
+        transition-duration: 0.3s;
+        transition-property: transform;
+    }
 
     .hvr-grow:hover,
     .hvr-grow:focus,
     .hvr-grow:active {
         transform: scale(1.1);
-}
+    }
+
+    ul.dropdown-menu {
+        border-radius: 0px;
+        border: solid black 2px;
+        font-family: Heatwerk;
+        font-size: 20px;
+    }
+
+    .userPictureBox {
+        margin: 5px;
+        border: solid black 2px;
+        display: inline-block;
+        margin-top: 10px;
+        margin-bottom: 3px;
+    }
+
+    .UserPicture {
+        max-height: 32px;
+        max-width: 32px;
+    }
+
+    #usernameProfile {
+        padding-left: 10px;
+    }
+
+    .profileBox {
+        height: 200px;
+        width: 150px;
+        right: 0;
+        position: absolute;
+        z-index: 10;
+        border: solid black 2px;
+        border-top: 0px;
+    }
+
+    #divExtend {
+        float: left;
+        width: 60px;
+        height: 50px;
+    }
+
+    p {
+        margin-bottom: 0px;
+        font-size: 15px;
+    }
+
+
+
 </style>
 
-   <!-- Static navbar -->
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container" id = "navbar-container" >
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container" id="navbar-container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{% url 'home' %}"> <img id = "navbar-img" class = "logo" src="{% static 'img/Arrows_Navbar.png' %}" /> <img class="hvr-grow" id = "logo2" src="{% static 'img/Office_Wars_Logo.png' %}" /></a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'home' %}"> <img id="navbar-img" class="logo"
+                                                                  src="{% static 'img/Arrows_Navbar.png' %}"/> <img
+                    class="hvr-grow" id="logo2" src="{% static 'img/Office_Wars_Logo.png' %}"/></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="{% url 'home' %}">HOME</a></li>
-            <li><a href="{% url 'war_list' %}">WARS</a></li>
-            <li><a href="{% url 'war_edit' %}">CREATE</a></li>
-            <!-- <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li> -->
-          </ul>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'war_list' %}">WARS</a></li>
+                <li><a href="{% url 'war_edit' %}">CREATE</a></li>
+                <!-- <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
+                </li> -->
+            </ul>
 
 
-          <ul class="nav navbar-nav navbar-right">
-          {% if request.user.is_authenticated %}
-            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
-            {% else %}
-            <li id = "registerdiv"><a id = "register" href="{% url 'registration_register' %}">Register</a></li>
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <div class="userPictureBox">
+                            <img class="UserPicture" src="{% static 'img/Bot.png' %}"/>
+                        </div>
+                    </li>
+                    <li><a href="#" id="usernameProfile" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ request.user }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class = "revealBox"><a>Profile</a></li>
+                            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li id="registerdiv"><a id="register" href="{% url 'registration_register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+
+            {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
+                <form class='navbar-form navbar-right' method='POST' action='{% url "auth_login" %}'>{% csrf_token %}
+                    <div class='form-group'>
+                        <input type='text' class='form-control' id="login-bar" name='username' placeholder='USERNAME'/>
+                    </div>
+                    <div class='form-group'>
+                        <input type='password' id="login-bar" class='form-control' name='password'
+                               placeholder='PASSWORD'/>
+                    </div>
+                    <button id="navbar_login_button" type='submit' class='btn btn-default'>Login</button>
+                </form>
             {% endif %}
-          </ul>
-
-          {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
-            <form class='navbar-form navbar-right' method='POST' action='{% url "auth_login" %}'>{% csrf_token %}
-              <div class='form-group'>
-                  <input type='text' class='form-control' id="login-bar" name='username' placeholder='USERNAME' />
-              </div>
-              <div class='form-group'>
-                  <input type='password' id="login-bar" class='form-control' name='password' placeholder='PASSWORD' />
-              </div>
-              <button id = "navbar_login_button" type='submit' class='btn btn-default'>Login</button>
-          </form>
-          {% endif %}
 
 
         </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+    </div>
+</nav>
+<div class = "profileBox">
+    <div class = "profileBoxSmaller">
+        <p>Wins: 100</p>
+        <p>Losses: 50</p>
+    </div>
+</div>
 
 <script>
-    $().hover(function() {
+    $(document).ready(function() {
+        $('.profileBox').hide()
+    });
+
+    $('.revealBox').click(function () {
+        $('.profileBox').toggle(function() {
+            $('.profileBox').animate
+        })
+    });
+
+    $().hover(function () {
 
     });
 </script>
