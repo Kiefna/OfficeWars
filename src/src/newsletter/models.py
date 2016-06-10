@@ -44,6 +44,9 @@ class War(models.Model):
 #     querylist = User.objects.all()[:10]
 #     player_list = models.ForeignKey(choices=querylist)
 
+class Office(models.Model):
+    officeName = models.CharField(max_length=100)
+
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User)
@@ -54,6 +57,7 @@ class UserProfile(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User)
     profilePicture = models.FileField(upload_to='uploads/')
+    office = models.ForeignKey(Office)
 
 
 class Bracket(models.Model):
@@ -62,6 +66,7 @@ class Bracket(models.Model):
     min_size = models.IntegerField(null=True)
     bracket_type = models.CharField(max_length=100, null=True)
     bracket_row = models.CharField(max_length=100)
+
 
 # class Player(models.Model):
 #     player_name = models.CharField(max_length=100)

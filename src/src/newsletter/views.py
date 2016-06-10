@@ -585,6 +585,14 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
 
             return render(request, "war_view.html", context)  # def war_edit():  # return render()
 
+
+def profile(request):
+
+    context = {
+        "playerUsername": request.user
+    }
+    return render(request, "profile.html", context)
+
 # @login_required
 # def like_category(request):
 #     context = RequestContext(request)

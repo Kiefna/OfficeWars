@@ -8,6 +8,10 @@
 
 
     <style>
+        .container {
+            margin-top: 0;
+        }
+
         nav.navbar.navbar-default.navbar-static-top {
             margin-bottom: 0px;
             border-bottom: 0px;
@@ -74,7 +78,7 @@
 
         }
 
-        .glyphicon {
+        .glyphicon2 {
             padding-top: 4pt;
             padding-left: 1pt;
         }
@@ -181,6 +185,10 @@
         {#            0 0 4px rgba(0, 0, 0, .05),#}{#            0 1px 3px rgba(0, 0, 0, .2),#}{#            0 3px 5px rgba(0, 0, 0, .2),#}{#            0 5px 10px rgba(0, 0, 0, .2),#}{#            0 10px 10px rgba(0, 0, 0, .2),#}{#            0 20px 20px rgba(0, 0, 0, .3);#}
         }
 
+        .profileBox {
+            border-top: 1px;
+        }
+
         #leaderboardcontainer {
             overflow: auto;
             max-height: 815px;
@@ -191,11 +199,11 @@
             margin: 0px;
         }
 
-        .panel-body {
+        .panel-body3 {
             padding: 5px;
         }
 
-        .panel-heading {
+        .panel-heading3 {
             padding: 5px;
         }
 
@@ -423,7 +431,7 @@
             {% if currentuser == war.players %}
                 <div id="rowDescript" class="row">
                     <a id="buttonAdd" href="#" class="btn btn-success btn-xs">
-                        <span class="glyphicon glyphicon-plus"><span class="addPlayer">ADD</span></span>
+                        <span class="glyphicon glyphicon-plus glyphicon2"><span class="addPlayer">ADD</span></span>
                     </a>
                 </div>
             {% else %}
@@ -443,13 +451,13 @@
 
             <div class="war_nameContainer">
                 <h2 class="war_name"> {{ war.war_name }} </h2>
-{#                <div class="points">#}
-{##}
-{#                    <h3 class="playerpoints">War Points:</h3>#}
-{#                    <h3 class="playerpoints2">{{ war.playerPoints }}</h3>#}
-{##}
-{#                </div>#}
-{#                <img class="coins" src="{% static 'img/WarPoints.png' %}" />#}
+                {#                <div class="points">#}
+                {##}
+                {#                    <h3 class="playerpoints">War Points:</h3>#}
+                {#                    <h3 class="playerpoints2">{{ war.playerPoints }}</h3>#}
+                {##}
+                {#                </div>#}
+                {#                <img class="coins" src="{% static 'img/WarPoints.png' %}" />#}
             </div>
             <hr class="lower">
             <h3> {{ war.get_war_type_display }} </h3>
@@ -461,10 +469,10 @@
                 {{ form.username }}
                 {{ form.meta }}
                 <button formmethod="post" value="" class="btn btn-success btn-xs">
-                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="glyphicon glyphicon-plus glyphicon2"></span>
                 </button>
                 <a class="btn btn-danger btn-xs" href="javascript:history.go(0)" style="padding-bottom: 2px;">
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="glyphicon glyphicon-remove glyphicon2"></span>
                 </a>
 
             </form>
@@ -511,23 +519,23 @@
                 <div id="leaderboardcontainer" class="container-fluid">
                     {% for player in players %}
                         <div class="panel panel-default">
-                            <div class="panel-heading">
+                            <div class="panel-heading panel-heading3">
                                 <h3 id="playerpointname">{{ player.user }}</h3>
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body panel-body3">
                                 <h3 id="playerpoints">{{ player.warpoints }}</h3>
                                 {% if currentuser == war.players %}
 
                                     <a id="downlike"
                                        href="{% url "war_like" war_name=war.war_name user=player.user vote="down" %}"
                                        class="btn btn-danger btn-xs downlike">
-                                        <span class="glyphicon glyphicon-chevron-down"></span>
+                                        <span class="glyphicon glyphicon-chevron-down glyphicon2"></span>
                                     </a>
 
                                     <a id="uplike"
                                        href="{% url "war_like" war_name=war.war_name user=player.user vote="up" %}"
                                        class="btn btn-success btn-xs uplike">
-                                        <span class="glyphicon glyphicon-chevron-up"></span>
+                                        <span class="glyphicon glyphicon-chevron-up glyphicon2"></span>
                                     </a>
 
                                     {#                                    <button value="" class="btn btn-success btn-xs btnAddPointsAppear">#}
@@ -566,7 +574,7 @@
 
                                         <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"
                                            class="btn loss">
-                                            <span class="glyphicon glyphicon-remove lossbutton"></span>
+                                            <span class="glyphicon glyphicon-remove lossbutton glyphicon2"></span>
                                         </a>
                                         <h3 class="tourneyPlayer">{{ bracket.players }}</h3>
 

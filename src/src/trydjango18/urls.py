@@ -9,6 +9,7 @@ urlpatterns = [
     # Examples:
     url(r'^$', 'newsletter.views.home', name='home'),
     url(r'^contact/$', 'newsletter.views.contact', name='contact'),
+    url(r'^profile/$', 'newsletter.views.profile', name='profile'),
     url(r'^war_list/$', 'newsletter.views.war_list', name='war_list'),
     url(r'^create/$', 'newsletter.views.war_main', name='create'),
     url(r'^create2/$', 'newsletter.views.create', name='create'),

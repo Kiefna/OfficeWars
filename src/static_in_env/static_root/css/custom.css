@@ -69,6 +69,11 @@
     src: url("../fonts/OSP-DIN.ttf");
 }
 
+@font-face {
+    font-family: SF-Laundromat;
+    src: url("../fonts/SFLaundromatic.ttf");
+}
+
 .navbar-default .navbar-nav > li > a {
     font-family: Heatwerk;
     font-size: 20px;
@@ -104,7 +109,7 @@
 }
 
 body {
-    font-family: "Impact";
+    font-family: "SF-Laundromat";
     font-size: 15pt;
 }
 
@@ -155,7 +160,7 @@ body {
 }
 
 #currentWars {
-    font-size:35pt;
+    font-size: 35pt;
 }
 
 #descriptor {
@@ -176,3 +181,20 @@ body {
 div#navbar-container {
     margin-top: 0px;
 }
+
+.contain {
+    border: solid black 1px;
+    background-color: #ececec;
+    border-radius: 4px;
+    margin: 15px;
+    padding: 15px;
+    position: relative;
+    left: 30px;
+    width: 500px;
+}
+
+.container2 {
+    background-image: url("../img/BackgroundCloud.png");
+}
+
+
