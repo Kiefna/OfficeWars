@@ -12,8 +12,8 @@ from django.template.context_processors import csrf
 from django.contrib.admin.options import IS_POPUP_VAR
 from ajax_select.fields import autoselect_fields_check_can_add
 
-from .forms import ContactForm, SignUpForm, PlayerForm, WarForm, PlayerSearch
-from .models import SignUp, War
+from .forms import ContactForm, SignUpForm, PlayerForm, WarForm, PlayerSearch, UserProfileUpdateForm1, UserProfileUpdateForm2
+from .models import SignUp, War, Profile
 
 playerlist = []
 matchups = []
@@ -588,9 +588,51 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
 
 def profile(request):
 
+    title = 'Create a War'
+    form1 = UserProfileUpdateForm1(request.POST or None)
+    form2 = UserProfileUpdateForm2(request.POST or None)
     context = {
-        "playerUsername": request.user
+        "title": title,
+        "form1": form1,
+        "form2": form2
     }
+
+    if not request.user.is_anonymous():
+        if form1.is_valid():
+            if form2.is_valid():
+                # form.save()
+                # print request.POST['email'] # not recommended
+                instance1 = form1.save(commit=False)
+                instance2 = form2.save(commit=False)
+
+                # Extraneous useless meddling - Fidgeting
+                war_name = form.cleaned_data.get("war_name")
+                description = form.cleaned_data.get("description")
+
+                # instance.players = request.user
+                # instance.war_name = war_name
+                # war_type = instance.war_type
+                # if instance.description:
+                #     instance.description = "No Description"
+
+                # if not instance.full_name:
+                # 	instance.full_name = "Justin"
+                instance1.save()
+                instance2.save()
+
+                # a = UserProfile(user=request.user, war=instance, warpoints=0)
+                # a.save()
+                #
+                # b = Bracket(tournament=instance, players=instance.players, bracket_row="base")
+                # b.save()
+
+                context = {
+                    "title": title,
+                    "form1": form1,
+                    "form2": form2,
+                }
+                return HttpResponseRedirect('/profile/')
+
     return render(request, "profile.html", context)
 
 # @login_required

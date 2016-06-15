@@ -3,6 +3,13 @@
 
 {% load staticfiles %}
 
+<style>
+    .shieldImg {
+        position: fixed;
+        margin-left: 30px;
+    }
+</style>
+
 {% block content %}
 
     <div class="container2">
@@ -25,7 +32,7 @@
 
             <div class='col-sm-6'>
 
-
+                <a class="shieldImg" href="{% url 'home' %}"> <img src="{% static 'img/TestPaletteShield.png' %}"/></a>
 
             </div>
 

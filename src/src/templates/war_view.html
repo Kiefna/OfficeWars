@@ -572,10 +572,13 @@
                                 {% else %}
                                     <div class="panel panel-default TourneyPanel">
 
-                                        <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"
-                                           class="btn loss">
-                                            <span class="glyphicon glyphicon-remove lossbutton glyphicon2"></span>
-                                        </a>
+                                        {% if currentuser == war.players %}
+                                            <a href="{% url "war_loss" war_name=war.war_name user=bracket.players loss="True" %}"
+                                               class="btn loss">
+                                                <span class="glyphicon glyphicon-remove lossbutton glyphicon2"></span>
+                                            </a>
+                                        {% endif %}
+
                                         <h3 class="tourneyPlayer">{{ bracket.players }}</h3>
 
                                     </div>
