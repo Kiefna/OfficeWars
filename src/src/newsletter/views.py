@@ -4,15 +4,18 @@ from random import shuffle
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.serializers import json
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from .models import UserProfile, Bracket
+from .models import UserProfile, Bracket, Office
 from django.template.context_processors import csrf
 from django.contrib.admin.options import IS_POPUP_VAR
 from ajax_select.fields import autoselect_fields_check_can_add
+from django.contrib.auth.decorators import login_required
+from django.template import Context
 
-from .forms import ContactForm, SignUpForm, PlayerForm, WarForm, PlayerSearch, UserProfileUpdateForm1, UserProfileUpdateForm2
+from .forms import ContactForm, SignUpForm, PlayerForm, WarForm, PlayerSearch, UserProfileUpdateForm1, \
+    UserProfileUpdateForm2, UserProfileUpdateForm3, OfficeCreate, OfficeSearch
 from .models import SignUp, War, Profile
 
 playerlist = []
@@ -347,6 +350,7 @@ def war_list(request):
 
 
 def war_view(request, war_name, user="default", vote="default", loss="False"):
+
     if (request.method == "GET") and ((user != "default") and (vote == "up")):
         wartemp2 = War.objects.filter(war_name=war_name)
         for item in wartemp2[0].userprofile_set.all():
@@ -386,15 +390,20 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
                 # print "----------"
                 # print wartemp[0].userprofile_set.all()
                 flag = True
-                for object in wartemp[0].userprofile_set.all():
-                    if object.user == playertemp[0]:
+                for object2 in wartemp[0].userprofile_set.all():
+                    if playertemp:
+                        if object2.user == playertemp[0]:
+                            flag = False
+                    else:
                         flag = False
+
 
                 if flag:
                     a = UserProfile(user=playertemp[0], war=wartemp[0], warpoints=0)
                     a.save()
                     b = Bracket(players=playertemp[0], tournament=wartemp[0], bracket_row="base")
                     b.save()
+                    return HttpResponseRedirect('')
                     # print "------------"
                     # print a.user
                     # print a.war.war_name
@@ -432,14 +441,14 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
                         bracket2.delete()
 
         else:
-            if counter == ((len(current_war[0].bracket_set.all()) - 1)/2):
+            if counter == ((len(current_war[0].bracket_set.all()) - 1) / 2):
                 for bracket2 in Bracket.objects.filter(tournament=current_war):
                     if bracket2.bracket_type == "LOSS":
                         bracket2.delete()
 
     try:
         # print "trying"
-        form = PlayerSearch(request.POST or None)
+        form = PlayerSearch(request.POST or None, initial={"username": " "})
         wartemp = War.objects.filter(war_name=war_name)
 
         if wartemp[0]:
@@ -586,54 +595,116 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
             return render(request, "war_view.html", context)  # def war_edit():  # return render()
 
 
+@login_required()
 def profile(request):
+    print "+++++++++++"
+    print request.user.user.title
+    print request.user.user.description
 
-    title = 'Create a War'
-    form1 = UserProfileUpdateForm1(request.POST or None)
-    form2 = UserProfileUpdateForm2(request.POST or None)
+    title = 'Profile'
+
+    form1 = UserProfileUpdateForm1(request.POST or None, initial={'email': request.user.email})
+    form2 = UserProfileUpdateForm2(request.POST or None,
+                                   initial={'title': request.user.user.title,
+                                            'description': request.user.user.description})
+    form3 = UserProfileUpdateForm3(request.POST or None, request.FILES,
+                                   initial={'profilePicture': request.user.user.profilePicture})
+
+    # initial={'title': request.user.user.title,
+    #                                'description': request.user.user.description})
+    # request.FILES)
+
     context = {
         "title": title,
         "form1": form1,
-        "form2": form2
+        "form2": form2,
+        "form3": form3
     }
 
-    if not request.user.is_anonymous():
-        if form1.is_valid():
-            if form2.is_valid():
-                # form.save()
-                # print request.POST['email'] # not recommended
-                instance1 = form1.save(commit=False)
-                instance2 = form2.save(commit=False)
+    if request.user.is_authenticated():
 
-                # Extraneous useless meddling - Fidgeting
-                war_name = form.cleaned_data.get("war_name")
-                description = form.cleaned_data.get("description")
+        if request.method == "POST":
 
-                # instance.players = request.user
-                # instance.war_name = war_name
-                # war_type = instance.war_type
-                # if instance.description:
-                #     instance.description = "No Description"
+            if form1.is_valid():
 
-                # if not instance.full_name:
-                # 	instance.full_name = "Justin"
-                instance1.save()
-                instance2.save()
+                if form2.is_valid():
 
-                # a = UserProfile(user=request.user, war=instance, warpoints=0)
-                # a.save()
-                #
-                # b = Bracket(tournament=instance, players=instance.players, bracket_row="base")
-                # b.save()
+                    if form3.is_valid():
+                        # instance2 = form2.save(commit=False)
+                        # # # form.save()
+                        # # # print request.POST['email'] # not recommended
+                        # instance1 = form1.save(commit=False)
+                        # Extraneous useless meddling - Fidgeting
+                        # war_name = form.cleaned_data.get("war_name")
+                        # description = form.cleaned_data.get("description")
 
-                context = {
-                    "title": title,
-                    "form1": form1,
-                    "form2": form2,
-                }
-                return HttpResponseRedirect('/profile/')
+                        # instance.players = request.user
+                        # instance.war_name = war_name
+                        # war_type = instance.war_type
+                        # if instance.description:
+                        #     instance.description = "No Description"
+
+                        # if not instance.full_name:
+                        # 	instance.full_name = "Justin"
+                        # print "--------------"
+                        # print instance1.email
+                        # # print instance2.user
+                        # print instance2.profilePicture
+                        # print instance2.title
+                        # print instance2.description
+                        # print "--------------"
+                        #
+                        # instance1.save()
+                        # instance2.save()
+
+                        currentUser = request.user
+
+                        tempPhoto = form3.cleaned_data.get("profilePicture")
+                        print "***" + str(tempPhoto) + "***"
+                        if not tempPhoto == "../static/img/Bot.png":
+                            currentUser.user.profilePicture = tempPhoto
+                        # print "*"
+                        # print currentUser.user.profilePicture
+                        # print "*"
+                        tempTitle = form2.cleaned_data.get("title")
+                        if tempTitle:
+                            currentUser.user.title = tempTitle
+                        # print currentUser.user.title
+                        tempDescription = form2.cleaned_data.get("description")
+                        if tempDescription:
+                            currentUser.user.description = tempDescription
+                        # print currentUser.user.description
+                        tempEmail = form1.cleaned_data.get("email")
+
+                        if tempEmail:
+                            currentUser.email = tempEmail
+
+                        currentUser.user.save()
+                        currentUser.save()
+                        # print "*2"
+                        # print currentUser.user.profilePicture
+                        # print "*2"
+                        # a = UserProfile(user=request.user, war=instance, warpoints=0)
+                        # a.save()
+                        #
+                        # b = Bracket(tournament=instance, players=instance.players, bracket_row="base")
+                        # b.save()
+
+                        context = {
+                            "title": title,
+                            "form1": form1,
+                            "form2": form2,
+                            "form3": form3
+                        }
+                        return HttpResponseRedirect('/profile/')
+
+                        # else:
+                        #     form = ContactForm(
+                        #         initial={'subject': 'I love your site!'}
+                        #     )
 
     return render(request, "profile.html", context)
+
 
 # @login_required
 # def like_category(request):
@@ -651,3 +722,175 @@ def profile(request):
 #         category.save()
 #
 #     return HttpResponse(likes)
+
+@login_required()
+def officeCreate(request):
+    title = 'Office Create'
+
+    form = OfficeCreate(request.POST or None, request.FILES)
+
+    # initial={'title': request.user.user.title,
+    #                                'description': request.user.user.description})
+    # request.FILES)
+
+    context = {
+        "title": title,
+        "form": form
+    }
+
+    if request.user.is_authenticated():
+
+        if request.method == "POST":
+
+            if form.is_valid():
+
+                if request.user.user.office:
+                    print "has OFFICE!!!!!"
+
+                    # instance2 = form2.save(commit=False)
+                    # # # form.save()
+                    # # # print request.POST['email'] # not recommended
+                    # instance1 = form1.save(commit=False)
+                    # Extraneous useless meddling - Fidgeting
+                    # war_name = form.cleaned_data.get("war_name")
+                    # description = form.cleaned_data.get("description")
+
+                    # instance.players = request.user
+                    # instance.war_name = war_name
+                    # war_type = instance.war_type
+                    # if instance.description:
+                    #     instance.description = "No Description"
+
+                    # if not instance.full_name:
+                    # 	instance.full_name = "Justin"
+                    # print "--------------"
+                    # print instance1.email
+                    # # print instance2.user
+                    # print instance2.profilePicture
+                    # print instance2.title
+                    # print instance2.description
+                    # print "--------------"
+                    #
+                    # instance1.save()
+                    # instance2.save()
+                    tempOfficeName = form.cleaned_data.get("officeName")
+                    if tempOfficeName:
+                        if request.user.user.office:
+                            request.user.user.office.officeName = tempOfficeName
+
+                    # currentUser = request.user
+                    # Office.objects.all().filter(officeName="tempOfficeName")
+                    if request.user.user.office:
+                        tempOfficeShield = form.cleaned_data.get("officeShield")
+                        print tempOfficeShield
+                        if not tempOfficeShield == "../static/img/Bot.png":
+                            request.user.user.office.officeShield = tempOfficeShield
+
+                        tempOfficeDescription = form.cleaned_data.get("officeDescription")
+                        print tempOfficeDescription
+                        if tempOfficeDescription:
+                            request.user.user.office.officeDescription = tempOfficeDescription
+
+                        tempOfficeType = form.cleaned_data.get("officeType")
+                        if tempOfficeType:
+                            request.user.user.office.officeType = tempOfficeDescription
+
+                        tempOfficeSize = form.cleaned_data.get("officeSize")
+                        if tempOfficeSize:
+                            request.user.user.office.officeSize = tempOfficeSize
+
+                        print tempOfficeName
+                        print tempOfficeSize
+                        print tempOfficeDescription
+                        print tempOfficeShield
+
+                else:
+                    tempOfficeName = form.cleaned_data.get("officeName")
+                    tempOfficeType = form.cleaned_data.get("officeType")
+                    tempOfficeSize = form.cleaned_data.get("officeSize")
+                    tempOfficeDescription = form.cleaned_data.get("officeDescription")
+                    tempOfficeShield = form.cleaned_data.get("officeShield")
+                    o = Office(officeName=tempOfficeName, officeType=tempOfficeType, officeSize=tempOfficeSize,
+                               officeDescription=tempOfficeDescription, officeShield=tempOfficeShield)
+                    o.save()
+                    request.user.user.office = o
+                    request.user.user.save()
+
+                    print tempOfficeName
+                    print tempOfficeSize
+                    print tempOfficeDescription
+                    print tempOfficeType
+                    print tempOfficeShield
+
+                    query = Office.objects.all()
+                    for item in query:
+                        print item.officeName
+
+                return HttpResponseRedirect('/')
+
+                # else:
+                #     form = ContactForm(
+                #         initial={'subject': 'I love your site!'}
+                #     )
+
+    return render(request, "officeCreate.html", context)
+
+
+@login_required()
+def officeView(request, slug="blank"):
+    if request.user.user.office:
+        query = request.user.user.office.profile_set.all()
+    else:
+        query = {}
+
+    query2 = Office.objects.filter(slug=slug)
+    print query2
+
+    if query2:
+        query3 = query2[0].profile_set.all()
+        context = {
+            "office_name": query2[0].officeName,
+            "query": query,
+            "query2": query2[0],
+            "query3": query3
+        }
+
+    elif slug == "blank":
+
+        context = {
+            "office_name": request.user.user.office.officeName,
+            "query": query,
+        }
+
+    else:
+        context = {
+            "office_name": "error404",
+            "query": query,
+        }
+
+    return render(request, "officeView.html", context)
+
+
+@login_required()
+def searchView(request):
+    form = OfficeSearch(request.POST or None)
+
+    query = Office.objects.all()
+    for item in query:
+        print item.slug
+    context = {
+        "form": form,
+        "query": query
+    }
+    # print "request"
+    # print request
+    # print "working"
+    return render(request, "officeSearchResult.html", context)
+
+    # query = request.GET
+    # for item in query:
+    #     print hello
+    #     print item
+    # c = Context({'query': query})
+    # return render(request, " ", c)
+    # return render(request, " ", c)

@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from ajax_select import urls as ajax_select_urls
@@ -10,6 +10,10 @@ urlpatterns = [
     url(r'^$', 'newsletter.views.home', name='home'),
     url(r'^contact/$', 'newsletter.views.contact', name='contact'),
     url(r'^profile/$', 'newsletter.views.profile', name='profile'),
+    url(r'^officeView/$', 'newsletter.views.officeView', name='officeView'),
+    url(r'^officeView/(?P<slug>[\w.@+-]+)$', 'newsletter.views.officeView', name='officeView'),
+    url(r'^officeCreate/$', 'newsletter.views.officeCreate', name='officeCreate'),
+    url(r'^search/$', 'newsletter.views.searchView', name='search'),
     url(r'^war_list/$', 'newsletter.views.war_list', name='war_list'),
     url(r'^create/$', 'newsletter.views.war_main', name='create'),
     url(r'^create2/$', 'newsletter.views.create', name='create'),
@@ -25,6 +29,7 @@ urlpatterns = [
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^tinymce/', include('tinymce.urls')),
 
+
     # url(r'^error/$', 'newsletter.views.sort', name='error'),
 
 
@@ -32,4 +37,9 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += patterns('',
+                            url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+                                'document_root': settings.MEDIA_ROOT,
+                            }))
+

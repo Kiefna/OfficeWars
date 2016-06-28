@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load customFilters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <script>
+        $(document).ready(function () {
+        {#            $('#navbar-img').animate({left: '1000px'}, "fast")#}
+        {##}
+        {##}
+        {#        });#}
+    </script>
+
+    <style>
+        .searchBarRow {
+            border: solid black 1px;
+            min-height: 150px;
+            margin-top: 10px;
+        }
+
+    </style>
+
+    <div class='row searchBarRow' style="">
+        <form class=" " action=" " method="get" style="margin: 5px 10px; width: 300px">
+            {{ form|crispy }}
+        </form>
+    </div>
+    <div style="padding: 10px" class='row searchBarRow'>
+        <a class="btn button-green" href="javascript:history.go(0)" style="letter-spacing: 1px; padding-bottom: 2px;">
+                    Join
+        </a>
+{#        <div>#}
+{#            <img style='float: left; height: 40px; width: 40px; margin: 5px; border: solid black 1px; border-radius: 20px;' src='/media/profilePictures/mask2.png'>#}
+{#            <div style="float: left; font-family: SF-Laundromat; margin-top: 5px;">#}
+{#                <p style="color: antiquewhite; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Name :</p>#}
+{#                <p style="color: aquamarine; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Type : </p>#}
+{#            </div>#}
+{#        </div>#}
+
+{#        {% for item in query %}#}
+{#            <ul>#}
+{#                <li>#}
+{#                    {{ item.officeName }}#}
+{#                </li>#}
+{#            </ul>#}
+{#        {% endfor %}#}
+    </div>
+
+
+{% endblock %}

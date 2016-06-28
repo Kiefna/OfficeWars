@@ -44,3 +44,8 @@ def shuffle(players):
 # def getBracket(player):
 #     player.
 #     return newlist
+
+
+@register.filter(name="addstr")
+def addstr(arg1, arg2):
+    return str(arg1) + str(arg2)

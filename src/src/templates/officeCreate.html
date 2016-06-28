@@ -16,19 +16,23 @@
     </style>
 
     <div class="container containerLimits">
-        <h1 class="page-header">Edit Profile</h1>
+        {% if request.user.user.office %}
+        <h1 class="page-header">Edit Office</h1>
+        {% else %}
+        <h1 class="page-header">Create Office</h1>
+        {% endif %}
         <div class="row">
             <!-- left column -->
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="text-center">
+                    {% if request.user.user.office %}
                     <img src="../media/{{ request.user.user.profilePicture }}" class="avatar img-circle img-thumbnail"
                          alt="avatar">
-                    <h4>Upload a different photo...</h4>
-{#                    <form id="form2" method="post" enctype="multipart/form-data"> {% csrf_token %}#}
-                    <form id="form2" method="post" enctype="multipart/form-data"> {% csrf_token %}
-                        {{ form3|crispy }}
-{#                        <input class='btn btn-default' type='submit' value='Update'/>#}
-{#                    </form>#}
+                    {% else %}
+                    <div style="height: 150px; width: 150px" class="avatar img-circle img-thumbnail">
+                         <img style="margin-top: 27px; height:110px; width: 110px" src="../static/img/QuestionShield.png">
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <!-- edit form column -->
@@ -38,10 +42,9 @@
                 {#                    <i class="fa fa-coffee"></i>#}
                 {#                    This is an <strong>.alert</strong>. Use this to show important messages to the user.#}
                 {#                </div>#}
-                <h3>Personal info</h3>
-{#                <form id="form1" method='POST' action=''> {% csrf_token %}#}
-                    {{ form1|crispy }}
-                    {{ form2|crispy }}
+                <h3>Office info</h3>
+                <form id="form1" method='POST' enctype="multipart/form-data"> {% csrf_token %}
+                    {{ form|crispy }}
                     <input class='btn btn-default' type='submit' value='Update'/>
                 </form>
                 {#      <form class="form-horizontal" role="form">#}

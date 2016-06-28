@@ -35,28 +35,37 @@
     }
 
     .UserPicture {
-        max-height: 32px;
-        max-width: 32px;
+        margin-top: 5px;
+        border-radius: 20px;
+        border: solid black 1px;
+        max-height: 40px;
+        min-height: 40px;
+        max-width: 40px;
     }
 
     #usernameProfile {
         margin-top: 0px;
         border-left: black solid 1px;
         border-right: black solid 1px;
-{#        padding-top: 5px;#}
-{#        padding-left: 5px;#}
-{#        padding-right: 5px;#}
-{#        padding-bottom: 0px;#}
-{#        border: solid black 1px;#}
-    {#        border-radius: 5px;#}
-        color: #9de3fc;
-{#        margin-top: 15px;#}
-        margin-left: 10px;
+        color: #b7ebff;
+    {#        margin-top: 15px;#} margin-left: 10px;
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     }
 
     .profileBox {
         height: 200px;
+        width: 147px;
+        right: 0;
+        position: absolute;
+        z-index: 10;
+        border: solid black 1px;
+        border-top: 0px;
+        background-color: #ececec;
+        display: none;
+    }
+
+    .profileBox2 {
+        height: 225px;
         width: 147px;
         right: 0;
         position: absolute;
@@ -162,30 +171,27 @@
     }
 
     .profileOfficePoints {
-{#        float: left;#}
-        padding-top: 5px;
+    {#        float: left;#} padding-top: 5px;
         margin-top: 0px;
         margin-bottom: 0px;
         font-size: 15px;
     }
 
     .profileOfficePoints2 {
-{#        float: right;#}
-        padding-top: 5px;
+    {#        float: right;#} padding-top: 5px;
         margin-top: 0px;
         margin-bottom: 0px;
         font-size: 15px;
     }
 
     .officePoints {
-{#        float: left;#}
-        font-size: 15px;
+    {#        float: left;#} font-size: 15px;
     }
 
     .yourPoints {
-{#        float: right;#}
-        font-size: 15px;
+    {#        float: right;#} font-size: 15px;
     }
+
     .panelLeft {
         float: left;
         z-index: 1;
@@ -197,20 +203,19 @@
     }
 
     .officeButton {
-{#        height: #}
-        margin-top: 15px;
+    {#        height: #} margin-top: 15px;
         margin-left: 15px;
-        color: #9de3fc;
+        color: #b7ebff;
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     }
 
-{#    .officeButton:hover {#}
-{#        height: #}
-{#        margin-top: 15px;#}
-{#        margin-left: 15px;#}
-{#        color: #59818f;#}
-{#        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;#}
-{#    }#}
+    {#    .officeButton:hover {#}
+    {#        height: #}
+    {#        margin-top: 15px;#}
+    {#        margin-left: 15px;#}
+    {#        color: #59818f;#}
+    {#        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;#}
+    {#    }#}
 
     .liButton {
         border-right: black solid 1px;
@@ -226,8 +231,18 @@
     }
 
     .panel-heading.panel-heading2.OfficeNameColour {
-        color: #9de3fc;
+        color: #b7ebff;
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+
+    .OfficeNameColour:hover, .OfficeNameColour:link, .OfficeNameColour:visited {
+        color: #b7ebff;
+        text-decoration: none;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+
+    .OfficeNameColour:hover {
+        color: #8cb1c0;
     }
 
 
@@ -252,6 +267,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="{% url 'home' %}">HOME</a></li>
                 <li><a href="{% url 'war_list' %}">WARS</a></li>
+                <li><a href="{% url 'search' %}">OFFICES</a></li>
                 <li><a href="{% url 'war_edit' %}">CREATE</a></li>
                 <!-- <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -269,11 +285,18 @@
 
 
             <ul class="nav navbar-nav navbar-right">
+
                 {% if request.user.is_authenticated %}
+
+                    <li style="margin-right: 50px">
+                        <form class="navbar-form navbar-right" action="{% url "newsletter.views.searchView" %}" method="get">
+                            <div class="form-group">
+                                <input style="width: 300px;" type="text" class="form-control" placeholder="Search Offices - Not Working Yet">
+                            </div>
+                        </form>
+                    </li>
                     <li>
-                        <div class="userPictureBox">
-                            <img class="UserPicture" src="{% static 'img/Bot.png' %}"/>
-                        </div>
+                        <img class="UserPicture avatar" src="/media/{{ request.user.user.profilePicture }}"/>
                     </li>
                     <li><a href="#" id="usernameProfile" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-haspopup="true"
@@ -312,58 +335,111 @@
         </div><!--/.nav-collapse -->
     </div>
 </nav>
-<div class="profileBox">
 
-    <div class="panel panel-default panel-default2">
-        <div class="panel-heading panel-heading2 OfficeNameColour">
-            ChatterBlock
-        </div>
-        <div class="panel-body panel-body2">
-            <strong>Rank:</strong> Lowly Peasant
-        </div>
-    </div>
+{% if request.user.user.office %}
+    <div class="profileBox">
 
-    <a class="hvr-float-shadow">
-        <img class="shield-img" src="{% static 'img/ChatterBlock Shield.png' %}"/>
-    </a>
-
-    <div class="panel panel-default panel-default2">
-        <div class="panelLeft panel panel-default hvr-float">
-            <div class="panel-heading panel-heading2">
-                <h3 class="profileOfficePoints">Office Points</h3>
+        <div class="panel panel-default panel-default2">
+            <div class="panel-heading panel-heading2 OfficeNameColour">
+                <a class="OfficeNameColour" href="{% url 'officeView' %}">{{ request.user.user.office.officeName }}</a>
             </div>
             <div class="panel-body panel-body2">
-                <div class ="officePoints">500</div>
+                <strong>Rank:</strong> Lowly Peasant
             </div>
         </div>
 
-        <div class="panelRight panel panel-default hvr-float">
-            <div class="panel-heading panel-heading2">
-                <h3 class="profileOfficePoints2">Your Points</h3>
+        <a class="hvr-float-shadow">
+            <img class="shield-img" src="/media/{{ request.user.user.office.officeShield }}"/>
+        </a>
+
+        <div class="panel panel-default panel-default2">
+            <div class="panelLeft panel panel-default hvr-float">
+                <div class="panel-heading panel-heading2">
+                    <h3 class="profileOfficePoints">Office Points</h3>
+                </div>
+                <div class="panel-body panel-body2">
+                    <div class="officePoints">500</div>
+                </div>
+            </div>
+
+            <div class="panelRight panel panel-default hvr-float">
+                <div class="panel-heading panel-heading2">
+                    <h3 class="profileOfficePoints2">Your Points</h3>
+                </div>
+                <div class="panel-body panel-body2">
+                    <div class="yourPoints">101</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% else %}
+    <div class="profileBox2">
+
+        <div class="panel panel-default panel-default2">
+            <div class="panel-heading panel-heading2 OfficeNameColour">
+                No Office
             </div>
             <div class="panel-body panel-body2">
-                <div class ="yourPoints">101</div>
+                <strong>Rank:</strong> Unqualified
             </div>
         </div>
-    </div>
 
-</div>
+        <a class="hvr-float-shadow">
+            <img class="shield-img" src="{% static 'img/QuestionShield.png' %}"/>
+        </a>
+
+        <div class="panel panel-default panel-default2">
+            {#            <div class="panelLeft panel panel-default hvr-float">#}
+            {#                <div class="panel-heading panel-heading2">#}
+            {#                    <h3 class="profileOfficePoints">Office Points</h3>#}
+            {#                </div>#}
+            {#                <div class="panel-body panel-body2">#}
+            {#                    <div class="officePoints">500</div>#}
+            {#                </div>#}
+            {#            </div>#}
+            {##}
+            {#            <div class="panelRight panel panel-default hvr-float">#}
+            {#                <div class="panel-heading panel-heading2">#}
+            {#                    <h3 class="profileOfficePoints2">Your Points</h3>#}
+            {#                </div>#}
+            {#                <div class="panel-body panel-body2">#}
+            {#                    <div class="yourPoints">101</div>#}
+            {#                </div>#}
+            {#            </div>#}
+            <div class="panel-body">
+                <p style="font-size: 15px">Don't have an Office? <a href="{% url 'officeCreate' %}">Create</a> or <a
+                        href="{% url 'search' %}">Join</a></p>
+            </div>
+        </div>
+
+    </div>
+{% endif %}
 
 <script>
 
-{#    $('.revealBox').click(function () {#}
-{#        $('.profileBox').toggle(function () {#}
-{#            $('.profileBox').addClass("animated fadeInDown")#}
-{#        })#}
-{#    });#}
+    {#    $('.revealBox').click(function () {#}
+    {#        $('.profileBox').toggle(function () {#}
+    {#            $('.profileBox').addClass("animated fadeInDown")#}
+    {#        })#}
+    {#    });#}
 
     $('.liButton').click(function () {
-        $('.liButton').toggleClass("active")
+        $('.liButton').toggleClass("active");
 
         $('.profileBox').toggle(function () {
             $('.profileBox').addClass("animated fadeInDown")
+        });
+
+        $('.profileBox2').toggle(function () {
+            $('.profileBox2').addClass("animated fadeInDown")
         })
     });
+
+    $().hover(function () {
+
+    });
+
 
     $().hover(function () {
 

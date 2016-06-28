@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+{% load customFilters %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <script>
+    </script>
+
+    <style>
+        .page-header {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-bottom: 2px;
+        }
+
+        strong {
+            letter-spacing: 1px;
+            color: black;
+        }
+
+        .officeText {
+            border: solid black 1px;
+            padding: 4px;
+            font-size: 15px;
+            background-color: white;
+            color: black;
+        }
+
+        .panel-text {
+            font-size: 20px;
+            display: initial;
+        }
+
+        .panel-default {
+            margin-bottom: 0px;
+        }
+
+        .panel-bodyCustom {
+            padding: 5px;
+            padding-left: 10px;
+        }
+
+        .panel-headingCustom {
+            padding: 5px;
+            padding-left: 10px;
+        }
+
+        .text-border {
+            letter-spacing: 1px;
+            color: white;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+        }
+
+        .number {
+            float: left;
+            margin-top: 30px;
+        }
+
+        .fa-trophy {
+            font-size: 100px;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+
+    </style>
+    {% if office_name == "error404" %}
+        <div style="border: solid black 1px; padding: 30px; border-radius: 4px; color: white; background: linear-gradient(to bottom, aliceblue, #9de3fc) "
+             class="container containerLimits">
+            <i style="padding-left: 47px; padding-right: auto; display: block; font-size: 150px; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <h1 class="text-border">404 - Office Not Found</h1>
+        </div>
+    {% elif office_name == "blank" %}
+        <div style="border: solid black 1px; padding: 10px 0px; border-radius: 4px; color: white; background: linear-gradient(to bottom, aliceblue, #9de3fc) "
+             class="container containerLimits">
+            {% if request.user.user.office %}
+                <h1 style="padding-left: 10px; border-bottom: 1px solid #333; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;"
+                    class="page-header">{{ request.user.user.office.officeName }}</h1>
+{#                <a class="btn button-green" href="javascript:history.go(0)" style="margin-right: 10px; letter-spacing: 1px; padding-bottom: 2px;">#}
+{#                    Join#}
+{#                </a>#}
+
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="text-center">
+                        {% if request.user.user.office %}
+                            {#                        <h1>{{ request.user.user.office.officeShield }}</h1>#}
+                            {% if request.user.user.office.officeShield == "../static/img/Bot.png" %}
+                                <a class="hvr-float-shadow" style="margin-left: 0px">
+                                    <img style=" margin-top: 65px; display: block; margin-left: auto; margin-right:auto; padding-bottom: 50px; width: 150px"
+                                         src="../static/img/QuestionShield.png">
+                                </a>
+
+                            {% else %}
+                                <a class="hvr-float-shadow" style="margin-left: 0px">
+                                    <img style=" margin-top: 65px; display: block; margin-left: auto; margin-right:auto; padding-bottom: 50px; width: 150px"
+                                         src="../media/{{ request.user.user.office.officeShield }}">
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                        {#                    <h4>Upload a different photo...</h4>#}
+                        {#                    <form id="form2" method="post" enctype="multipart/form-data"> {% csrf_token %}#}
+                        {#                        {{ form3|crispy }}#}
+                        {#                        <input class='btn btn-default' type='submit' value='Update'/>#}
+                        {#                    </form>#}
+                    </div>
+                </div>
+                <!-- edit form column -->
+                <div class="col-md-5 col-sm-6 col-xs-12 personal-info">
+                    {#                <div class="alert alert-info alert-dismissable">#}
+                    {#                    <a class="panel-close close" style="font-size: 50px" data-dismiss="alert">×</a>#}
+                    {#                    <i class="fa fa-coffee"></i>#}
+                    {#                    This is an <strong>.alert</strong>. Use this to show important messages to the user.#}
+                    {#                </div>#}
+                    <h3 style="margin: 5px; margin-left: 0px; margin-top: 10px; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">
+                        Office info</h3>
+                    {#                <form id="form1" method='POST' action=''> {% csrf_token %}#}
+                    {#                    {{ form|crispy }}#}
+                    {#                    <input class='btn btn-default' type='submit' value='Update'/>#}
+                    {#                </form>#}
+
+                    <div>
+                        <strong>Office Type:</strong>
+                        <div class="officeText">
+                            <p style="font-size: 18px">{{ request.user.user.office.officeType }}</p>
+                        </div>
+
+                        <strong>Office Size:</strong>
+                        <div class="officeText">
+                            <p style="font-size: 18px">{{ request.user.user.office.officeSize }}</p>
+                        </div>
+
+                        <strong>Office
+                            Description:</strong>
+                        <div class="officeText">
+                            <p style="font-size: 18px">{{ request.user.user.office.officeDescription }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <h3 style="margin: 5px; margin-left: 0px; margin-top: 10px; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">
+                        Trophies - Not Integrated</h3>
+                    <div class="container-fluid"
+                         style="max-width: 302px; border: solid 1px black; background-color: aliceblue; color: black">
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <p class="text-border" style="font-size: 30px; padding: 10px;">You do not have an Office - <a href="{% url 'search' %}">Join?</a></p>
+            {% endif %}
+        </div>
+
+        <div style=" margin-bottom: 10px; border: solid black 1px; padding: 10px; border-radius: 4px; color: white; background-color: aliceblue"
+             class="container">
+            {% for item in query %}
+                <div style="max-width: 1148px; border: solid black 1px; padding: 10px; border-radius: 4px; color: white; background: linear-gradient(to bottom, aliceblue, #9de3fc) "
+                     class="container-fluid">
+                    <div class=" col-xs-6 col-md-2" style="">
+                        <h1 class="text-border number">{{ forloop.counter }}.</h1>
+                        <a>
+                            <img style="height: 90px; width: 90px; float: right; margin-right: 10px"
+                                 src="../media/{{ item.profilePicture }}" class="avatar img-circle img-thumbnail"
+                                 alt="avatar">
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 panel panel-default"
+                         style="padding-left: 0px; padding-right: 0px; margin-right: 0px; margin-bottom: 0px">
+                        <div class="panel-heading panel-headingCustom" style="padding-bottom: 0px">
+                            <h3 class="panel-text">Username: </h3><strong style="color: #f4f4f4;">+</strong> <strong
+                                class="panel-text text-border">{{ item.user.username }}</strong>
+                        </div>
+                        <div class="panel-body panel-bodyCustom" style="">
+                            <p style="padding-bottom: 2px; border-bottom: dashed 1px lightgrey; color: black"><strong
+                                    class="text-border" style="color: aquamarine">Rank: </strong>
+                                Not Configured</p>
+                            <p style="padding-top: 4px; color: black"><strong class="text-border" style="color: aqua">Points: </strong>
+                                Not
+                                Configured</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden-xs col-sm-12 col-md-8 panel panel-default"
+                         style="padding-left: 0px; padding-right: 0px; margin-right: 0px; margin-bottom: 0px">
+                        <div class="panel-heading panel-headingCustom" style="padding-bottom: 0px">
+                            <p>
+                            <h3 class="panel-text">Title: </h3><strong style="color: #f4f4f4;">+</strong> <strong
+                                class="panel-text text-border">{{ item.title }}</strong> </p>
+                        </div>
+                        <div class="panel-body panel-bodyCustom" style="padding-top: 0px; padding-left: 5px">
+                            <strong class="text-border" style="color: bisque;">Description: </strong>
+                            <p style="padding-bottom: 2px; margin-top: -8px; height: 34px; color: black; border-left: dashed lightgrey 1px; border-right: dashed lightgrey 1px; border-bottom: dashed lightgrey 1px;">
+                                {{ item.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="border: solid black 1px; padding: 10px 0px; border-radius: 4px; color: white; background: linear-gradient(to bottom, aliceblue, #9de3fc) "
+             class="container containerLimits">
+
+            <h1 style="padding-left: 10px; border: none; display: inline-block; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;"
+                class="page-header">{{ query2.officeName }}</h1>
+            {% if not request.user.user.office %}
+            <a class="btn button-green" href="javascript:history.go(0)" style="margin-right: 10px; float: right; letter-spacing: 1px; padding-bottom: 2px;">
+                    Join
+            </a>
+            {% endif %}
+            <hr style="margin-top: 0px; border-top: solid black 1px;">
+
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="text-center">
+                        {#                        <h1>{{ request.user.user.office.officeShield }}</h1>#}
+                        {% if query2.officeShield == "../static/img/Bot.png" %}
+                            <a class="hvr-float-shadow" style="margin-left: 0px">
+                                <img style=" margin-top: 65px; display: block; margin-left: auto; margin-right:auto; padding-bottom: 50px; width: 150px"
+                                     src="../static/img/QuestionShield.png">
+                            </a>
+
+                        {% else %}
+                            <a class="hvr-float-shadow" style="margin-left: 0px">
+                                <img style=" margin-top: 65px; display: block; margin-left: auto; margin-right:auto; padding-bottom: 50px; width: 150px"
+                                     src="../media/{{ query2.officeShield }}">
+                            </a>
+                        {% endif %}
+
+                        {#                    <h4>Upload a different photo...</h4>#}
+                        {#                    <form id="form2" method="post" enctype="multipart/form-data"> {% csrf_token %}#}
+                        {#                        {{ form3|crispy }}#}
+                        {#                        <input class='btn btn-default' type='submit' value='Update'/>#}
+                        {#                    </form>#}
+                    </div>
+                </div>
+                <!-- edit form column -->
+                <div class="col-md-5 col-sm-6 col-xs-12 personal-info">
+                    {#                <div class="alert alert-info alert-dismissable">#}
+                    {#                    <a class="panel-close close" style="font-size: 50px" data-dismiss="alert">×</a>#}
+                    {#                    <i class="fa fa-coffee"></i>#}
+                    {#                    This is an <strong>.alert</strong>. Use this to show important messages to the user.#}
+                    {#                </div>#}
+                    <h3 style="margin: 5px; margin-left: 0px; margin-top: 10px; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">
+                        Office info</h3>
+                    {#                <form id="form1" method='POST' action=''> {% csrf_token %}#}
+                    {#                    {{ form|crispy }}#}
+                    {#                    <input class='btn btn-default' type='submit' value='Update'/>#}
+                    {#                </form>#}
+
+                    <div>
+                        <strong>Office Type:</strong>
+                        <div class="officeText">
+                            <p style="font-size: 18px">{{ query2.officeType }}</p>
+                        </div>
+
+                        <strong>Office Size:</strong>
+                        <div class="officeText">
+                            <p style="font-size: 18px">{{ query2.officeSize }}</p>
+                        </div>
+
+                        <strong>Office
+                            Description:</strong>
+                        <div class="officeText">
+                            <p style="font-size: 18px">{{ query2.officeDescription }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <h3 style="margin: 5px; margin-left: 0px; margin-top: 10px; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">
+                        Trophies - Not Integrated</h3>
+                    <div class="container-fluid"
+                         style="max-width: 302px; border: solid 1px black; background-color: aliceblue; color: black">
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style=" margin-bottom: 10px; border: solid black 1px; padding: 10px; border-radius: 4px; color: white; background-color: aliceblue"
+             class="container">
+            {% for item in query3 %}
+                <div style="max-width: 1148px; border: solid black 1px; padding: 10px; border-radius: 4px; color: white; background: linear-gradient(to bottom, aliceblue, #9de3fc) "
+                     class="container-fluid">
+                    <div class=" col-xs-6 col-md-2" style="">
+                        <h1 class="text-border number">{{ forloop.counter }}.</h1>
+                        <a>
+                            <img style="height: 90px; width: 90px; float: right; margin-right: 10px"
+                                 src="../media/{{ item.profilePicture }}" class="avatar img-circle img-thumbnail"
+                                 alt="avatar">
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 panel panel-default"
+                         style="padding-left: 0px; padding-right: 0px; margin-right: 0px; margin-bottom: 0px">
+                        <div class="panel-heading panel-headingCustom" style="padding-bottom: 0px">
+                            <h3 class="panel-text">Username: </h3><strong style="color: #f4f4f4;">+</strong> <strong
+                                class="panel-text text-border">{{ item.user.username }}</strong>
+                        </div>
+                        <div class="panel-body panel-bodyCustom" style="">
+                            <p style="padding-bottom: 2px; border-bottom: dashed 1px lightgrey; color: black"><strong
+                                    class="text-border" style="color: aquamarine">Rank: </strong>
+                                Not Configured</p>
+                            <p style="padding-top: 4px; color: black"><strong class="text-border" style="color: aqua">Points: </strong>
+                                Not
+                                Configured</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden-xs col-sm-12 col-md-8 panel panel-default"
+                         style="padding-left: 0px; padding-right: 0px; margin-right: 0px; margin-bottom: 0px">
+                        <div class="panel-heading panel-headingCustom" style="padding-bottom: 0px">
+                            <p>
+                            <h3 class="panel-text">Title: </h3><strong style="color: #f4f4f4;">+</strong> <strong
+                                class="panel-text text-border">{{ item.title }}</strong> </p>
+                        </div>
+                        <div class="panel-body panel-bodyCustom" style="padding-top: 0px; padding-left: 5px">
+                            <strong class="text-border" style="color: bisque;">Description: </strong>
+                            <p style="padding-bottom: 2px; margin-top: -8px; height: 34px; color: black; border-left: dashed lightgrey 1px; border-right: dashed lightgrey 1px; border-bottom: dashed lightgrey 1px;">
+                                {{ item.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+{% endblock %}

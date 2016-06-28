@@ -82,7 +82,7 @@
             <div class='col-sm-6 participateWar'>
                 <h1 id="currentWars2">Participating Wars</h1>
                 <hr>
-                {% if queryset2.all %}
+                {% if queryset2.all and not item2.war.players == item2.user %}
                     {% for item2 in queryset2 %}
                         {% if item2.war.players == item2.user %}
                         {% else %}

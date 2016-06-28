@@ -80,11 +80,6 @@
     color: black;
 }
 
-.btn {
-    border-radius: 0px;
-    border-color: black;
-}
-
 #login-bar {
     font-family: "OSP DIN";
     font-size: 15pt;
@@ -97,6 +92,8 @@
     font-size: 17px;
     padding-bottom: 2px;
     /*padding-top: ;*/
+    border-radius: 0px;
+    border-color: black;
 }
 
 .nav > li > a {
@@ -197,4 +194,25 @@ div#navbar-container {
     background-image: url("../img/simplePattern.png");
 }
 
+/*clearablefileinput {*/
+    /*font-family: Rugsnatcher;*/
+    /*font-size: 17px;*/
+    /*padding-bottom: 2px;*/
+    /*!*padding-top: ;*!*/
+    /*border-radius: 0px;*/
+    /*border-color: black;*/
+/*}*/
 
+.coolButton {
+    font-family: Rugsnatcher;
+    font-size: 17px;
+    padding-bottom: 2px;
+    /*padding-top: ;*/
+    border-radius: 0px;
+    border-color: black;
+}
+
+.img-circle {
+    height: 200px;
+    width: 200px;
+}

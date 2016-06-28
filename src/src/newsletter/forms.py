@@ -1,12 +1,13 @@
 from django import forms
 from .models import SignUp
-from .models import War, Profile
+from .models import War, Profile, Office
 from django.contrib.auth.models import User
 from datetimewidget.widgets import DateTimeWidget
 from ajax_select.fields import AutoCompleteField, AutoCompleteSelectMultipleField
 from ajax_select import make_ajax_field
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
+from foundation_filefield_widget.widgets import FoundationFileInput, FoundationImageInput
 
 
 class ContactForm(forms.Form):
@@ -42,9 +43,34 @@ class WarForm(forms.ModelForm):
 class PlayerSearch(forms.ModelForm):
     username = AutoCompleteField('username', show_help_text=False)
 
+    def __init__(self, *args, **kwargs):
+        # instance = kwargs.get('instance', None)
+        #
+        # kwargs.update(initial={
+        #     # 'field': 'value'
+        #     'title': '1020',
+        #     'description': 'huh'
+        # })
+
+        super(PlayerSearch, self).__init__(*args, **kwargs)
+        # self.fields['profilePicture'].initial = self.request.user.Profile
+
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+
     class Meta:
         fields = ['username']
         model = User
+
+
+class OfficeSearch(forms.ModelForm):
+    officeName = AutoCompleteField('office', show_help_text=False)
+
+    class Meta:
+        fields = ['officeName']
+        model = Office
 
 
 class SignUpForm(forms.ModelForm):
@@ -71,21 +97,210 @@ class SignUpForm(forms.ModelForm):
 
 
 class UserProfileUpdateForm1(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password', 'email']
-
-
-class UserProfileUpdateForm2(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(UserProfileUpdateForm2, self).__init__(*args, **kwargs)
+        # instance = kwargs.get('instance', None)
+        #
+        # kwargs.update(initial={
+        #     # 'field': 'value'
+        #     'title': '1020',
+        #     'description': 'huh'
+        # })
+
+        super(UserProfileUpdateForm1, self).__init__(*args, **kwargs)
+        # self.fields['profilePicture'].initial = self.request.user.Profile
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
         self.helper = FormHelper(self)
+        self.helper.form_tag = False
+
+    class Meta:
+        model = User
+        fields = ['email']
+
+
+class UserProfileUpdateForm2(forms.ModelForm):
+    # def get_form_kwargs(self):
+    #     kwargs = super(UserProfileUpdateForm2, self).get_form_kwargs()
+    #     kwargs['initial'] = {
+    #         "title":
+    #     }  # your initial data here
+    #     return kwargs
+    def __init__(self, *args, **kwargs):
+        # """If no initial data, provide some defaults."""
+        # initial = kwargs.get('initial', {})
+        # initial['title'] = 'Test'
+        # initial['description'] = 'Test2'
+        # kwargs['initial'] = initial
+        super(UserProfileUpdateForm2, self).__init__(*args, **kwargs)
+
+        # def __init__(self, *args, **kwargs):
+        # instance = kwargs.get('instance', None)
+        #
+        # kwargs.update(initial={
+        #     # 'field': 'value'
+        #     'title': '1020',
+        #     'description': 'huh'
+        # })
+        # title = kwargs.pop('title', None)
+        # description = kwargs.pop('description', None)
+        #
+        # print "_-_-_-_-"
+        # print title
+        # print description
+        # print "_-_-_-_-"
+        # self.fields['title'].initial = title
+        # # print self.fields['title'].initial
+        # # print self.fields['description'].initial
+        # self.fields['description'].initial = description
+        # initial_fields = ["title", "description"]
+        #
+        # initial = kwargs.pop('initial', {})
+        # initial["title"] = initial.get("title") or getattr(self.person, "title")
+        # kwargs['initial'] = initial
+
+        # super(UserProfileUpdateForm2, self).__init__(*args, **kwargs)
+        # self.fields['profilePicture'].initial = self.request.user.Profile
+        # print "2_-_-_-_-2"
+        # print self.fields['title'].initial
+        # self.initial['title'] = title
+        # # print self.fields['title'].initial
+        # # print self.fields['description'].initial
+        # self.initial['description'] = description
+        # print "****"
+        # print self.initial['description']
+        # print "****"
+        # print self.fields['description'].initial
+        # print "2_-_-_-_-2"
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        # self.helper = FormHelper(self)
+        # self.helper.form_tag = False
+        # self.helper.layout = Layout(
+        #     Field('profilePicture'),
+        # )
+
+        # self.helper.form_tag = False
+
+        # self.helper.layout = Layout(
+        #     Fieldset(
+        #         'Profile Picture'
+        #     ),
+        #
+        #     ButtonHolder(
+        #         Submit('update', 'Update', css_class='btn btn-default')
+        #     )
+        # )
 
         # You can dynamically adjust your layout
-        self.helper.layout.append(Submit('save', 'save'))
+        # self.helper.layout.append(Submit('save', 'save'))
 
     class Meta:
         model = Profile
+        fields = ['title', 'description']
+        # fields = ['profilePicture']
+
+
+class UserProfileUpdateForm3(forms.ModelForm):
+    # def get_form_kwargs(self):
+    #     kwargs = super(UserProfileUpdateForm2, self).get_form_kwargs()
+    #     kwargs['initial'] = {
+    #         "title":
+    #     }  # your initial data here
+    #     return kwargs
+    def __init__(self, *args, **kwargs):
+        """If no initial data, provide some defaults."""
+        # initial = kwargs.get('initial', {})
+        # initial['title'] = 'Test'
+        # initial['description'] = 'Test2'
+        # kwargs['initial'] = initial
+        super(UserProfileUpdateForm3, self).__init__(*args, **kwargs)
+
+        # def __init__(self, *args, **kwargs):
+        # instance = kwargs.get('instance', None)
+        #
+        # kwargs.update(initial={
+        #     # 'field': 'value'
+        #     'title': '1020',
+        #     'description': 'huh'
+        # })
+        # title = kwargs.pop('title', None)
+        # description = kwargs.pop('description', None)
+        #
+        # print "_-_-_-_-"
+        # print title
+        # print description
+        # print "_-_-_-_-"
+        # self.fields['title'].initial = title
+        # # print self.fields['title'].initial
+        # # print self.fields['description'].initial
+        # self.fields['description'].initial = description
+        # initial_fields = ["title", "description"]
+        #
+        # initial = kwargs.pop('initial', {})
+        # initial["title"] = initial.get("title") or getattr(self.person, "title")
+        # kwargs['initial'] = initial
+
+        # super(UserProfileUpdateForm2, self).__init__(*args, **kwargs)
+        # self.fields['profilePicture'].initial = self.request.user.Profile
+        # print "2_-_-_-_-2"
+        # print self.fields['title'].initial
+        # self.initial['title'] = title
+        # # print self.fields['title'].initial
+        # # print self.fields['description'].initial
+        # self.initial['description'] = description
+        # print "****"
+        # print self.initial['description']
+        # print "****"
+        # print self.fields['description'].initial
+        # print "2_-_-_-_-2"
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        # self.helper = FormHelper(self)
+        # self.helper.form_tag = False
+        # self.helper.layout = Layout(
+        #     Field('profilePicture'),
+        # )
+
+        # self.helper.form_tag = False
+
+        # self.helper.layout = Layout(
+        #     Fieldset(
+        #         'Profile Picture'
+        #     ),
+        #
+        #     ButtonHolder(
+        #         Submit('update', 'Update', css_class='btn btn-default')
+        #     )
+        # )
+
+        # You can dynamically adjust your layout
+        # self.helper.layout.append(Submit('save', 'save'))
+
+    class Meta:
+        model = Profile
+        fields = ['profilePicture']
+        # fields = ['profilePicture']
+
+
+class OfficeCreate(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        # instance = kwargs.get('instance', None)
+        #
+        # kwargs.update(initial={
+        #     # 'field': 'value'
+        #     'title': '1020',
+        #     'description': 'huh'
+        # })
+
+        super(OfficeCreate, self).__init__(*args, **kwargs)
+        # self.fields['profilePicture'].initial = self.request.user.Profile
+
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+
+    class Meta:
+        model = Office
+        fields = ['officeName', 'officeSize', 'officeType', 'officeDescription', 'officeShield']
