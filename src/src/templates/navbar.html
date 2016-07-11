@@ -344,7 +344,7 @@
                 <a class="OfficeNameColour" href="{% url 'officeView' %}">{{ request.user.user.office.officeName }}</a>
             </div>
             <div class="panel-body panel-body2">
-                <strong>Rank:</strong> Lowly Peasant
+                <strong>Rank:</strong> {{ request.user.user.get_rank_display }}
             </div>
         </div>
 

@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.template import Context
 
 from .forms import ContactForm, SignUpForm, PlayerForm, WarForm, PlayerSearch, UserProfileUpdateForm1, \
-    UserProfileUpdateForm2, UserProfileUpdateForm3, OfficeCreate, OfficeSearch
+    UserProfileUpdateForm2, UserProfileUpdateForm3, OfficeCreate, OfficeSearch, ChatForm
 from .models import SignUp, War, Profile
 
 playerlist = []
@@ -203,42 +203,51 @@ def create(request):
 
 
 def home(request):
-    title = 'Sign Up Now'
-    form = SignUpForm(request.POST or None)
+
+    form = ChatForm(request.POST)
+    # if request.POST:
+    #     if form.is_valid():
     context = {
-        "title": title,
         "form": form
     }
 
-    if form.is_valid():
-        # form.save()
-        # print request.POST['email'] #not recommended
-        instance = form.save(commit=False)
 
-        full_name = form.cleaned_data.get("full_name")
-        if not full_name:
-            full_name = "New full name"
-        instance.full_name = full_name
-        # if not instance.full_name:
-        # 	instance.full_name = "Justin"
-        instance.save()
-        context = {
-            "title": "Thank you"
-        }
-
-    if request.user.is_authenticated() and request.user.is_staff:
-        # print(SignUp.objects.all())
-        # i = 1
-        # for instance in SignUp.objects.all():
-        # 	print(i)
-        # 	print(instance.full_name)
-        # 	i += 1
-
-        queryset = SignUp.objects.all().order_by('-timestamp')  # .filter(full_name__iexact="Justin")
-        # print(SignUp.objects.all().order_by('-timestamp').filter(full_name__iexact="Justin").count())
-        context = {
-            "queryset": queryset
-        }
+    # title = 'Sign Up Now'
+    # form = SignUpForm(request.POST or None)
+    # context = {
+    #     "title": title,
+    #     "form": form
+    # }
+    #
+    # if form.is_valid():
+    #     # form.save()
+    #     # print request.POST['email'] #not recommended
+    #     instance = form.save(commit=False)
+    #
+    #     full_name = form.cleaned_data.get("full_name")
+    #     if not full_name:
+    #         full_name = "New full name"
+    #     instance.full_name = full_name
+    #     # if not instance.full_name:
+    #     # 	instance.full_name = "Justin"
+    #     instance.save()
+    #     context = {
+    #         "title": "Thank you"
+    #     }
+    #
+    # if request.user.is_authenticated() and request.user.is_staff:
+    #     # print(SignUp.objects.all())
+    #     # i = 1
+    #     # for instance in SignUp.objects.all():
+    #     # 	print(i)
+    #     # 	print(instance.full_name)
+    #     # 	i += 1
+    #
+    #     queryset = SignUp.objects.all().order_by('-timestamp')  # .filter(full_name__iexact="Justin")
+    #     # print(SignUp.objects.all().order_by('-timestamp').filter(full_name__iexact="Justin").count())
+    #     context = {
+    #         "queryset": queryset
+    #     }
 
     return render(request, "home.html", context)
 
@@ -448,7 +457,7 @@ def war_view(request, war_name, user="default", vote="default", loss="False"):
 
     try:
         # print "trying"
-        form = PlayerSearch(request.POST or None, initial={"username": " "})
+        form = PlayerSearch(request.POST or None, initial={"username": ""})
         wartemp = War.objects.filter(war_name=war_name)
 
         if wartemp[0]:
@@ -745,7 +754,7 @@ def officeCreate(request):
             if form.is_valid():
 
                 if request.user.user.office:
-                    print "has OFFICE!!!!!"
+                    # print "has OFFICE!!!!!"
 
                     # instance2 = form2.save(commit=False)
                     # # # form.save()
@@ -826,6 +835,8 @@ def officeCreate(request):
                     for item in query:
                         print item.officeName
 
+                request.user.user.rank = "LD"
+                request.user.user.save()
                 return HttpResponseRedirect('/')
 
                 # else:
@@ -837,16 +848,24 @@ def officeCreate(request):
 
 
 @login_required()
-def officeView(request, slug="blank"):
+def officeView(request, slug="blank", join=False):
     if request.user.user.office:
         query = request.user.user.office.profile_set.all()
     else:
         query = {}
 
     query2 = Office.objects.filter(slug=slug)
-    print query2
+
+    if join:
+        if not request.user.user.office:
+            request.user.user.office = query2[0]
+            request.user.user.save()
+            return HttpResponseRedirect('officeView')
+
+    # print query2
 
     if query2:
+
         query3 = query2[0].profile_set.all()
         context = {
             "office_name": query2[0].officeName,
@@ -858,7 +877,7 @@ def officeView(request, slug="blank"):
     elif slug == "blank":
 
         context = {
-            "office_name": request.user.user.office.officeName,
+            "office_name": slug,
             "query": query,
         }
 

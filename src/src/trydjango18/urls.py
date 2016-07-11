@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^profile/$', 'newsletter.views.profile', name='profile'),
     url(r'^officeView/$', 'newsletter.views.officeView', name='officeView'),
     url(r'^officeView/(?P<slug>[\w.@+-]+)$', 'newsletter.views.officeView', name='officeView'),
+    url(r'^officeView/(?P<slug>[\w.@+-]+)/(?P<join>[\w.@+-]+)$', 'newsletter.views.officeView', name='officeView'),
     url(r'^officeCreate/$', 'newsletter.views.officeCreate', name='officeCreate'),
     url(r'^search/$', 'newsletter.views.searchView', name='search'),
     url(r'^war_list/$', 'newsletter.views.war_list', name='war_list'),
@@ -28,7 +29,7 @@ urlpatterns = [
         name='war_loss'),
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^tinymce/', include('tinymce.urls')),
-
+    url(r'^django_socketio', include('django_socketio.urls')),
 
     # url(r'^error/$', 'newsletter.views.sort', name='error'),
 

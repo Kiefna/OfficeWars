@@ -304,3 +304,7 @@ class OfficeCreate(forms.ModelForm):
     class Meta:
         model = Office
         fields = ['officeName', 'officeSize', 'officeType', 'officeDescription', 'officeShield']
+
+
+class ChatForm(forms.Form):
+    message = forms.CharField(required=False, max_length=200, label="")

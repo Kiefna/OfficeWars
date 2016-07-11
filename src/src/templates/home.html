@@ -1,8 +1,8 @@
 {% extends "base2.html" %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
-
-
+{% load socketio_tags %}
+{% socketio %}
 {% block head_title %}Welcome | {{ block.super }}{% endblock %}
 
 <style>
@@ -28,6 +28,74 @@
             min-height: 1000px;
         }
 
+        .chat-container {
+            display: inline-block;
+            height: 550px;
+            width: 500px;
+            background-color: white;
+            border: solid black 1px;
+            border-radius: 2px;
+            margin-left: 50px;
+            margin-top: 50px;
+        }
+
+        .row {
+            margin-right: 30px;
+            margin-left: 30px;
+            max-height: 87%;
+            max-width: 87%;
+        }
+
+        .chat-button {
+            float: left;
+            padding: 0px;
+            background-color: #d7d7e2;
+            border: none;
+        }
+
+        .loss {
+            float: right;
+            padding: 0px;
+            background-color: #d7d7e2;
+            border: none;
+            height: 35px;
+            border-left: solid black 1px;
+        }
+
+        .lossbutton {
+            background-color: transparent;
+            border: none;
+        }
+
+        span.glyphicon.glyphicon-send.lossbutton {
+            padding-left: 6px;
+            padding-top: 9px;
+            padding-right: 6px;
+        }
+
+        input#id_message {
+            border: none;
+            padding: 2px;
+        }
+
+        #div_id_message {
+            margin: 0px;
+        }
+
+        .panel-default {
+            border: solid black 1px;
+            border-radius: 2px;
+        }
+
+        .form-control {
+            font-size: 25px;
+        }
+
+        .chatBox {
+            border: solid 1px black;
+{#            border-bottom: none;#}
+            border-radius: 2px;
+        }
     {% endblock %}
 </style>
 
@@ -35,16 +103,36 @@
 
 {% block content %}
     <div class="container2">
-        <div class="row">
-            <div class='col-sm-6'>
-                <h3>Welcome to OfficeWars, an app that keeps track of office warfare and competition. For the
-                    competitive and unnecessarily Awesome. </h3>
-                <img class="flag" src="{% static 'img/OfficeWars_Banner.png' %}"/>
-            </div>
-            <div class='col-sm-6'>
+        {#        <div class="row">#}
+        {#            <div class='col-sm-6'>#}
+        {#                <h3>Welcome to OfficeWars, an app that keeps track of office warfare and competition. For the#}
+        {#                    competitive and unnecessarily Awesome. </h3>#}
+        {#                <img class="flag" src="{% static 'img/OfficeWars_Banner.png' %}"/>#}
+        {#            </div>#}
+        {#            <div class='col-sm-6'>#}
+        {##}
+        {#            </div>#}
+        {#        </div>#}
+        <div class="chat-container">
+            <h3 style="display: inline-block; margin-top: 10px; text-align: center; width: 500px">
+                Test Chat
+            </h3>
+
+            <div class="row chatBox" style="background-color: azure; height: 444px;">
 
             </div>
+
+            <div class="panel panel-default" style="display: inline-block; background-color: aliceblue; margin-top: 4px; margin-left: 30px">
+                {#                <div style="float: right">{{ form|crispy }}</div>#}
+                {#                <input class='btn chat-button' type='submit' value='Post'/>#}
+                <div class="chat-form-container" style="float: left; width: 401px">{{ form|crispy }}</div>
+                <a href="#"
+                   class="btn loss">
+                    <span class="glyphicon glyphicon-send lossbutton glyphicon2"></span>
+                </a>
+            </div>
         </div>
+
     </div>
 
 
@@ -72,3 +160,6 @@
     {#    </script>#}
 {% endblock %}
 
+<script>
+
+</script>

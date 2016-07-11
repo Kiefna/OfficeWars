@@ -63,7 +63,7 @@ class OfficeLookup(LookupChannel):
                     </div>
                 </div>
             </a>
-            """ % (item.officeName, item.officeShield, item.officeName, item.officeType)
+            """ % (item.slug, item.officeShield, item.officeName, item.officeType)
 
     def get_result(self, obj):
         """ result is the simple text that is the completion of what the person typed """

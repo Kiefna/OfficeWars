@@ -89,6 +89,16 @@ class UserProfile(models.Model):
 
 
 class Profile(models.Model):
+    MEMBER = 'MB'
+    ELDER = 'ED'
+    LEADER = 'LD'
+
+    RANK_CHOICES = (
+        (MEMBER, "Member"),
+        (ELDER, "Elder"),
+        (LEADER, "Leader"),
+    )
+
     user = models.OneToOneField(User, related_name='user')
 
     profilePicture = models.ImageField(upload_to='profilePictures', null=True,
@@ -97,6 +107,7 @@ class Profile(models.Model):
     title = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(max_length=300, null=True, blank=True)
     office = models.ForeignKey(Office, null=True)
+    rank = models.CharField(max_length=50, null=True, choices=RANK_CHOICES, default=MEMBER)
 
 
 # def assure_user_profile_exists(pk):

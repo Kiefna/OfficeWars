@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'datetimewidget',
     'ajax_select',
+    'django_socketio',
     'tinymce',
     'foundation_filefield_widget',
     # my apps
