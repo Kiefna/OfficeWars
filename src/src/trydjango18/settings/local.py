@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'datetimewidget',
     'ajax_select',
     'django_socketio',
+    'channels',
     'tinymce',
     'foundation_filefield_widget',
     # my apps
@@ -161,3 +162,14 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 TINYMCE_SPELLCHECKER = False
 TINYMCE_COMPRESSOR = False
+
+redis_host = os.environ.get('REDIS_HOST', 'localhost')
+
+# Channel layer definitions
+# http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "trydjango18.routing.channel_routing",
+    },
+}

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Register your models here.
 
 from .forms import SignUpForm
-from .models import SignUp, Profile
+from .models import SignUp, Profile, Room
 
 
 class SignUpAdmin(admin.ModelAdmin):
@@ -19,7 +19,11 @@ class SignUpAdmin(admin.ModelAdmin):
 
 admin.site.register(SignUp, SignUpAdmin)
 
-
+admin.site.register(
+    Room,
+    list_display=["id", "title", "staff_only"],
+    list_display_links=["id", "title"],
+)
 # # Define an inline admin descriptor for Employee model
 # # which acts a bit like a singleton
 # class ProfileInline(admin.StackedInline):

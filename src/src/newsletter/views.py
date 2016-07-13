@@ -16,7 +16,7 @@ from django.template import Context
 
 from .forms import ContactForm, SignUpForm, PlayerForm, WarForm, PlayerSearch, UserProfileUpdateForm1, \
     UserProfileUpdateForm2, UserProfileUpdateForm3, OfficeCreate, OfficeSearch, ChatForm
-from .models import SignUp, War, Profile
+from .models import SignUp, War, Profile, Room
 
 playerlist = []
 matchups = []
@@ -205,10 +205,12 @@ def create(request):
 def home(request):
 
     form = ChatForm(request.POST)
+    rooms = Room.objects.order_by("title")
     # if request.POST:
     #     if form.is_valid():
     context = {
-        "form": form
+        "form": form,
+        "rooms": rooms
     }
 
 
@@ -913,3 +915,7 @@ def searchView(request):
     # c = Context({'query': query})
     # return render(request, " ", c)
     # return render(request, " ", c)
+
+
+def navbarSearchView(request):
+    return TemplateResponse(request, "yourtemplate.html", {'form': OfficeSearch()})

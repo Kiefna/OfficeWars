@@ -66,7 +66,7 @@ class PlayerSearch(forms.ModelForm):
 
 
 class OfficeSearch(forms.ModelForm):
-    officeName = AutoCompleteField('office', show_help_text=False)
+    officeName = AutoCompleteField('office', show_help_text=False, required=False)
 
     class Meta:
         fields = ['officeName']

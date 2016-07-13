@@ -30,7 +30,7 @@
 
         .chat-container {
             display: inline-block;
-            height: 550px;
+            height: 620px;
             width: 500px;
             background-color: white;
             border: solid black 1px;
@@ -82,20 +82,45 @@
             margin: 0px;
         }
 
-        .panel-default {
+        .chat-panel {
             border: solid black 1px;
             border-radius: 2px;
         }
 
-        .form-control {
+        .chatInput {
             font-size: 25px;
         }
 
         .chatBox {
             border: solid 1px black;
-{#            border-bottom: none;#}
-            border-radius: 2px;
+        {#            border-bottom: none;#} border-radius: 2px;
         }
+
+        .roomBox {
+            display: inline-block;
+            width: 300px;
+            border: black solid 1px;
+            background-color: white;
+        }
+
+        .username {
+            margin-right: 30px;
+            color: orangered;
+        }
+
+        .body {
+
+        }
+
+        .message {
+            padding: 3px;
+        }
+
+        h2 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
     {% endblock %}
 </style>
 
@@ -114,25 +139,41 @@
         {#            </div>#}
         {#        </div>#}
         <div class="chat-container">
+            <ul class="nav nav-tabs">
+                {% for room in rooms %}
+                    <li role="presentation" class="room-link" data-room-id="{{ room.id }}"><a
+                            style="padding-top: 8px; padding-bottom: 5px;">{{ room }}</a></li>
+                    {% empty %}
+                    <p class="empty">No chat rooms defined. Maybe make some in the <a
+                            href="{% url 'admin:index' %}">admin</a>?</p>
+                {% endfor %}
+            </ul>
+
             <h3 style="display: inline-block; margin-top: 10px; text-align: center; width: 500px">
                 Test Chat
             </h3>
 
-            <div class="row chatBox" style="background-color: azure; height: 444px;">
-
+            {#            <div class="row chatBox" style="background-color: azure; height: 444px;">#}
+            {##}
+            {#            </div>#}
+            <div id="chats">
             </div>
-
-            <div class="panel panel-default" style="display: inline-block; background-color: aliceblue; margin-top: 4px; margin-left: 30px">
-                {#                <div style="float: right">{{ form|crispy }}</div>#}
-                {#                <input class='btn chat-button' type='submit' value='Post'/>#}
-                <div class="chat-form-container" style="float: left; width: 401px">{{ form|crispy }}</div>
-                <a href="#"
-                   class="btn loss">
-                    <span class="glyphicon glyphicon-send lossbutton glyphicon2"></span>
-                </a>
-            </div>
+            {#            <div class="panel panel-default"#}
+            {#                 style="display: inline-block; background-color: aliceblue; margin-top: 4px; margin-left: 30px">#}
+            {#                <div style="float: right">{{ form|crispy }}</div>#}
+            {#                <input class='btn chat-button' type='submit' value='Post'/>#}
+            {#                <div class="chat-form-container" style="float: left; width: 401px">{{ form|crispy }}</div>#}
+            {#                <a href="#"#}
+            {#                   class="btn loss">#}
+            {#                    <span class="glyphicon glyphicon-send lossbutton glyphicon2"></span>#}
+            {#                </a>#}
+            {#            </div>#}
         </div>
 
+        {#        <div class="roomBox">#}
+        {#            <div id="chats">#}
+        {#            </div>#}
+        {#        </div>#}
     </div>
 
 
@@ -158,8 +199,151 @@
     {#            }#}
     {#        });#}
     {#    </script>#}
+
+    <script>
+        $(function () {
+            // Correctly decide between ws:// and wss://
+            var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+            var ws_path = ws_scheme + '://' + window.location.host + "/chat/stream/";
+            console.log("Connecting to " + ws_path);
+            var socket = new ReconnectingWebSocket(ws_path);
+
+            // Handle incoming messages
+            socket.onmessage = function (message) {
+                // Decode the JSON
+                console.log("Got websocket message " + message.data);
+                var data = JSON.parse(message.data);
+                // Handle errors
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                // Handle joining
+                if (data.join) {
+                    console.log("Joining room " + data.join);
+                    var roomdiv = $(
+                            "<div class='room' id='room-" + data.join + "'>" +
+                            {#                            "<h2>" + data.title + "</h2>" +#}
+                            "<div class='row chatBox' style='background-color: azure; height: 444px;'><div class='messages'></div></div><div class='panel panel-default chat-panel' style='display: inline-block; background-color: aliceblue; margin-top: 4px; margin-left: 30px'> <div class='chat-form-container' style='float: left; width: 431px'><form style='display: inline-block; border: None; height: 35px; width: 400px;'><input class='chatInput' style='text-decoration: None; height: 35px; width: 400px; border: None' type='text'></input></form> <a href='#'class='btn loss'> <span class='glyphicon glyphicon-send lossbutton glyphicon2'></span> </a> </div></div>" +
+                            "</div>"
+                    );
+                    // Hook up send button to send a message
+                    roomdiv.find("form").on("submit", function () {
+                        socket.send(JSON.stringify({
+                            "command": "send",
+                            "room": data.join,
+                            "message": roomdiv.find("input").val()
+                        }));
+                        roomdiv.find("input").val("");
+                        return false;
+                    });
+                    $("#chats").append(roomdiv);
+                    // Handle leaving
+                } else if (data.leave) {
+                    console.log("Leaving room " + data.leave);
+                    $("#room-" + data.leave).remove();
+                    // Handle getting a message
+                } else if (data.message || data.msg_type != 0) {
+                    var msgdiv = $("#room-" + data.room + " .messages");
+                    var ok_msg = "";
+                    console.log("----");
+                    console.log(data.room);
+                    console.log(msgdiv);
+                    // msg types are defined in chat/settings.py
+                    // Only for demo purposes is hardcoded, in production scenarios, consider call a service.
+                    switch (data.msg_type) {
+                        case 0:
+                            // Message
+                            ok_msg = "<div class='message'>" +
+                                    "<span class='username'>" + data.username + ":" + "</span>" +
+                                    "<span class='body'>" + data.message + "</span>" +
+                                    "</div>";
+                            break;
+                        case 1:
+                            // Warning / Advice messages
+                            ok_msg = "<div class='contextual-message text-warning'>" + data.message +
+                                    "</div>";
+                            break;
+                        case 2:
+                            // Alert / Danger messages
+                            ok_msg = "<div class='contextual-message text-danger'>" + data.message +
+                                    "</div>";
+                            break;
+                        case 3:
+                            // "Muted" messages
+                            ok_msg = "<div class='contextual-message text-muted'>" + data.message +
+                                    "</div>";
+                            break;
+                        case 4:
+                            // User joined room
+                            ok_msg = "<div class='contextual-message text-muted'>" + data.username +
+                                    " joined the room!" +
+                                    "</div>";
+                            break;
+                        case 5:
+                            // User left room
+                            ok_msg = "<div class='contextual-message text-muted'>" + data.username +
+                                    " left the room!" +
+                                    "</div>";
+                            break;
+                        default:
+                            console.log("Unsupported message type!");
+                            return;
+                    }
+                    msgdiv.append(ok_msg);
+
+                    msgdiv.scrollTop(msgdiv.prop("scrollHeight"));
+                } else {
+                    console.log("Cannot handle message!");
+                }
+            };
+
+            // Says if we joined a room or not by if there's a div for it
+            inRoom = function (roomId) {
+                return $("#room-" + roomId).length > 0;
+            };
+
+            // Room join/leave
+            $("li.room-link").click(function () {
+                roomId = $(this).attr("data-room-id");
+                if (inRoom(roomId)) {
+                    // Leave room
+                    $(this).removeClass("joined");
+                    $(this).removeClass("active");
+                    socket.send(JSON.stringify({
+                        "command": "leave",
+                        "room": roomId
+                    }));
+                } else {
+                    // Join room
+
+                    // Check if active room already exists and if it does remove "active" class.
+                    if ($( ".active" ).length) {
+                        $(".active").removeClass("joined");
+                        socket.send(JSON.stringify({
+                            "command": "leave",
+                            "room": $(".active").attr("data-room-id")
+                        }));
+                        $(".active").removeClass("active");
+                    }
+                    // Add "active" class to "this" and send "join" command to socket.
+                    $(this).addClass("joined");
+                    $(this).addClass("active");
+                    socket.send(JSON.stringify({
+                        "command": "join",
+                        "room": roomId
+                    }));
+                }
+            });
+
+            // Helpful debugging
+            socket.onopen = function () {
+                console.log("Connected to chat socket");
+            };
+            socket.onclose = function () {
+                console.log("Disconnected from chat socket");
+            }
+        });
+    </script>
+
 {% endblock %}
-
-<script>
-
-</script>

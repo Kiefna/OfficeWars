@@ -1,5 +1,5 @@
 {% load staticfiles %}
-
+{% load crispy_forms_tags %}
 
 <style>
     .hvr-grow {
@@ -289,10 +289,11 @@
                 {% if request.user.is_authenticated %}
 
                     <li style="margin-right: 50px">
-                        <form class="navbar-form navbar-right" action="{% url "newsletter.views.searchView" %}" method="get">
+                        <form class="navbar-form navbar-right" action="{% url "newsletter.views.navbarSearchView" %}" method="POST">{% csrf_token %}
                             <div class="form-group">
                                 <input style="width: 300px;" type="text" class="form-control" placeholder="Search Offices - Not Working Yet">
                             </div>
+{#                            {% crispy form %}#}
                         </form>
                     </li>
                     <li>

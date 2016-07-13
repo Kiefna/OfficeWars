@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^officeView/(?P<slug>[\w.@+-]+)/(?P<join>[\w.@+-]+)$', 'newsletter.views.officeView', name='officeView'),
     url(r'^officeCreate/$', 'newsletter.views.officeCreate', name='officeCreate'),
     url(r'^search/$', 'newsletter.views.searchView', name='search'),
+    url(r'^navbarSearch/$', 'newsletter.views.navbarSearchView', name='navbarSearch'),
     url(r'^war_list/$', 'newsletter.views.war_list', name='war_list'),
     url(r'^create/$', 'newsletter.views.war_main', name='create'),
     url(r'^create2/$', 'newsletter.views.create', name='create'),
